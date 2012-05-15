@@ -14,15 +14,14 @@
 	}
 	
 	jSQL = function() {
-		this._jSQL = _jSQL;
-		this._DB = _DB;
-		this._currentDB = null;
 		this.init.apply(this,arguments);
 	};
 	
 	jSQL.prototype = {
 		init: function() {
-			
+			this._jSQL = _jSQL;
+			this._DB = _DB;
+			this._currentDB = null;
 		},
 		create: function(dbname, db) {
 			if(this._DB[dbname]) {
