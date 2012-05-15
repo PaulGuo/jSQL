@@ -32,19 +32,37 @@
 			this._DB[dbname] = db;
 			return this;
 		},
+		
 		use: function(dbname) {
 			this._currentDB = this._DB[dbname];
 			return this;
 		},
+		
+		
+		/**
+		 * select object from currentDB
+		 * @param key 
+		 		'x': return base value which key is 'x' 
+		 		'*':return all 
+		 		'x.y.z ...': return deep value x->y->x
+		 * 
+		 */
+		select: function(key) {
+			// TODO
+		},
+		
+		where: function(){
+			
+		},
+		
 		count: function() {
 			
 		},
+		
 		orderby: function() {
 			
 		},
-		where: function() {
-			
-		},
+		
 		iterate: function() {
 			
 		}
