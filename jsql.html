@@ -1,0 +1,28 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+	<script type="text/javascript" src="jsql.js"></script>
+</head>
+<body>
+	<script type="text/javascript">
+		var db=new jSQL();
+		db.create('test',{
+			'233970CA18511':{
+				data:{
+				
+				},
+				html:'test1'
+			},
+			'233970CA18911':{
+				data:{
+				
+				},
+				html:'test2'
+			}
+		}).use('test');
+		console.log(db);
+	</script>
+</body>
+</html>
