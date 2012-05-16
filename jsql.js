@@ -103,6 +103,9 @@
 		findAll: function() {
 			return this._buffer;
 		},
+		find: function(key) {
+			return this._buffer[key];
+		},
 		
 		_deep: function(data, scope) {
 			var _tmp = data, scope = scope.split('.');
