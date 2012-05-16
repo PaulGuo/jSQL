@@ -4,7 +4,6 @@
 	<meta charset="UTF-8">
 	<title></title>
 	<script type="text/javascript" src="jsql.js"></script>
-	<script type="text/javascript" src="https://raw.github.com/PaulGuo/Juicer/master/juicer.js"></script>
 </head>
 <body>
 	<script type="text/javascript">
@@ -149,24 +148,11 @@
 			return new Date(ymd[0],ymd[1]-1,ymd[2],time[0],time[1]);
 		};
 		
-		var data = db.select('data').orderby('depTime', buildDate , 'asc').findAll();
-
-		var tpl = [
-			'{@each data as item,index}',
-				'(${index}) / ${item.__jSQL_Key} <br/>',
-			'{@/each}'
-		].join('');
-
-		//console.log(db._objectToArray(data));
-
-		document.write(juicer(tpl,{data:db._objectToArray(data)}));
-		console.log(db.select('data').orderby('depTime', buildDate , 'asc').count());
 		console.log(db.select('data').orderby('depTime', buildDate , 'asc').findAll());
 		
-		//console.log(db.select('data').orderby('depTime', buildDate , 'asc').findAll());
 		//console.log(db.select('data').orderby('cacheID', 'asc').findAll());
 		
-		db.create('struct',{
+		/*db.create('struct',var struct = {
 			"first" : {
 				steps : [{
 					"id" : "1089",
@@ -190,23 +176,9 @@
 					"id" : "1860",
 					"name" : "意大利"
 				}]
-			},
-			"third" : {
-				steps : [{
-					"id" : "1904",
-					"name" : "西班牙"
-				}, {
-					"id" : "1882",
-					"name" : "瑞士"
-				}, {
-					"id" : "1860",
-					"name" : "意大利"
-				}]
 			}
 		}).use('struct');
-		console.log(db.select('steps').orderby('cacheID', 'asc').findAll());
-		console.log(db.select('steps').orderby('cacheID', 'asc').find('second'));
-		console.log(db.use('struct').select('*').count());
+		console.log(db.select('steps').orderby('cacheID', 'asc').findAll());*/
 	</script>
 </body>
 </html>

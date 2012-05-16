@@ -24,13 +24,6 @@
 			this._currentDB = null;
 			this._buffer = null;
 		},
-
-		/**
-		* create a new database
-		* @param dbname [String]
-		* @param db [Object]
-		*/
-
 		create: function(dbname, db) {
 			if(this._DB[dbname]) {
 				throw('DB Already Exist.');
@@ -39,32 +32,10 @@
 			this._DB[dbname] = db;
 			return this;
 		},
-
-		/**
-		* select an exist database as current
-		* @param dbname [String]
-		*/
-
 		use: function(dbname) {
-			if(!this._DB[dbname]) {
-				throw('Database Not Exist.');
-			}
-
 			this._currentDB = this._DB[dbname];
 			return this;
 		},
-
-		/**
-		* drop an exist database
-		* @param dbname [String]
-		*/
-
-		drop: function(dbname) {
-			if(dbname in this._DB) {
-				delete this._DB[dbname];
-			}
-		},
-
 		/**
 		* select object from currentDB
 		* @param key
@@ -73,7 +44,6 @@
 			'a.b.c': return deep value a->b->c
 		*
 		*/
-
 		select: function(key) {
 			if(!this._currentDB) {
 				throw('Please Select Database First.');
@@ -81,33 +51,18 @@
 			
 			if(key==='*') {
 				this._buffer = this._currentDB;
-				return this;
 			}
 			
-			this._buffer = this._currentDB;
 			this._buffer = this.iterate(function(data) {
 				return this._deep(data, key);
 			});
 			
 			return this;
 		},
-
-		/**
-		* get the count of current result set
-		*/
-
 		count: function() {
-			return this._objectToArray(this._buffer).length;
+			
 		},
-
-		/**
-		* sort the current result set
-		* @param field [String]
-		* @param callback [function]
-		* @param order [String <asc | desc>]
-		*/
-
-		orderby: function(field, callback, order) {
+		orderby: function(field, callback ,order) {
 			var _array = this._objectToArray(this._buffer);
 			var _this = this;
 			
@@ -128,12 +83,10 @@
 			this._buffer = this._arrayToObject(_array);
 			return this;
 		},
-
 		where: function() {
 			this._buffer = _currentDB;
 			return this;
 		},
-
 		iterate: function(fn) {
 			var _tmp = {};
 			this._buffer = this._buffer || this._currentDB;
@@ -145,28 +98,12 @@
 			}
 			return _tmp;
 		},
-
-		/**
-		* return the current result set
-		* @return [Object]
-		*/
-
 		findAll: function() {
 			return this._buffer;
 		},
-
-		/**
-		* return a specified item of current result set
-		* @return [Object]
-		*/
-
 		find: function(key) {
 			return this._buffer[key];
 		},
-
-		/**
-		* private methods
-		*/
 		
 		_deep: function(data, scope) {
 			var _tmp = data, scope = scope.split('.');
@@ -175,15 +112,12 @@
 			}
 			return _tmp;
 		},
-
 		_isArray: function(obj) {
 			return toString.call(obj) === '[object Array]';
 		},
-
 		_isObject: function(obj) {
 			return obj === Object(obj);
 		},
-
 		_clone: function(obj) {
 			var _tmp = {};
 			
@@ -197,7 +131,6 @@
 			}
 			return _tmp;
 		},
-
 		_objectToArray: function(object) {
 			var array = [], object = this._clone(object);
 			
@@ -210,7 +143,6 @@
 			
 			return array;
 		},
-
 		_arrayToObject: function(array, key) {
 			var object = {};
 			
