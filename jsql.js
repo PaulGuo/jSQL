@@ -56,15 +56,34 @@
 				this._buffer = this._currentDB;
 			}
 			
-			this._scopeChain = key.split('.');
+			this._scopeChain = key;
+			
+			this._buffer = this.iterate(function(data) {
+				return this._deep(data, this._scopeChain);
+			});
 			
 			return this;
 		},
 		count: function() {
 			
 		},
-		orderby: function(field) {
+		orderby: function(field, order) {
+			var _array = this._objectToArray(this._buffer);
+			var _this = this;
 			
+			if(order && order.toLowerCase() === 'asc') {
+				_array.sort(function(a, b) {
+					return _this._deep(a, field) - _this._deep(b, field);
+				});
+			} else {
+				_array.sort(function(a, b) {
+					return _this._deep(b, field) - _this._deep(a, field);
+				});
+			}
+			
+			_array = this._arrayToObject(_array);
+			this._buffer = _array;
+			return this;
 		},
 		where: function() {
 			this._buffer = _currentDB;
@@ -72,7 +91,7 @@
 		},
 		iterate: function(fn) {
 			var _tmp = {};
-			this._buffer = this._currentDB;
+			this._buffer = this._buffer || this._currentDB;
 			
 			for(var i in this._buffer) {
 				if(this._buffer.hasOwnProperty(i)) {
@@ -82,19 +101,20 @@
 			return _tmp;
 		},
 		findAll: function() {
-			return this.iterate(function(data) {
-				var _tmp = data;
-				for(var i = 0; i < this._scopeChain.length; i++) {
-					_tmp = _tmp[this._scopeChain[i]];
-				}
-				return _tmp;
-			});
+			return this._buffer;
 		},
 		
-		_isArray = function(obj) {
+		_deep: function(data, scope) {
+			var _tmp = data, scope = scope.split('.');
+			for(var i = 0; i < scope.length; i++) {
+				_tmp = _tmp[scope[i]];
+			}
+			return _tmp;
+		},
+		_isArray: function(obj) {
 			return toString.call(obj) === '[object Array]';
 		},
-		_isObject = function(obj) {
+		_isObject: function(obj) {
 			return obj === Object(obj);
 		},
 		_clone: function(obj) {
@@ -123,7 +143,8 @@
 		_arrayToObject: function(array, key) {
 			var object = {};
 			for(var i = 0; i < array.length; i++) {
-				object[item.data[key || '__jSQL_Key']] = array[i];
+				object[array[i][key || '__jSQL_Key']] = array[i];
+				delete object[array[i][key || '__jSQL_Key']][key || '__jSQL_Key'];
 			};
 			return object;
 		}
