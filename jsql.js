@@ -22,6 +22,8 @@
 			this._jSQL = _jSQL;
 			this._DB = _DB;
 			this._currentDB = null;
+			this._buffer = null;
+			this._scopeChain = null;
 		},
 		create: function(dbname, db) {
 			if(this._DB[dbname]) {
@@ -35,17 +37,95 @@
 			this._currentDB = this._DB[dbname];
 			return this;
 		},
+		/**
+		* select object from currentDB
+		* @param key
+			'*':	 return all
+			'a':	 return base value which key is 'a'
+			'a.b.c': return deep value a->b->c
+		*
+		*/
+		select: function(key) {
+			this._scopeChain = null;
+			
+			if(!this._currentDB) {
+				throw('Please Select Database First.');
+			}
+			
+			if(key==='*') {
+				this._buffer = this._currentDB;
+			}
+			
+			this._scopeChain = key.split('.');
+			
+			return this;
+		},
 		count: function() {
 			
 		},
-		orderby: function() {
+		orderby: function(field) {
 			
 		},
 		where: function() {
-			
+			this._buffer = _currentDB;
+			return this;
 		},
-		iterate: function() {
+		iterate: function(fn) {
+			var _tmp = {};
+			this._buffer = this._currentDB;
 			
+			for(var i in this._buffer) {
+				if(this._buffer.hasOwnProperty(i)) {
+					_tmp[i] = fn.call(this, this._buffer[i]) || this._buffer[i];
+				}
+			}
+			return _tmp;
+		},
+		findAll: function() {
+			return this.iterate(function(data) {
+				var _tmp = data;
+				for(var i = 0; i < this._scopeChain.length; i++) {
+					_tmp = _tmp[this._scopeChain[i]];
+				}
+				return _tmp;
+			});
+		},
+		
+		_isArray = function(obj) {
+			return toString.call(obj) === '[object Array]';
+		},
+		_isObject = function(obj) {
+			return obj === Object(obj);
+		},
+		_clone: function(obj) {
+			var _tmp = {};
+			
+			if (!this._isObject(obj)) return obj;
+			if(this._isArray(obj)) return obj.slice();
+			
+			for(var i in obj) {
+				if(obj.hasOwnProperty(i)) {
+					_tmp[i] = obj[i];
+				}
+			}
+			return _tmp;
+		},
+		_objectToArray: function(object) {
+			var array = [], object = this._clone(object);
+			for(var i in object) {
+				if(object.hasOwnProperty(i)) {
+					object[i].__jSQL_Key = i;
+					array.push(object[i]);
+				}
+			}
+			return array;
+		},
+		_arrayToObject: function(array, key) {
+			var object = {};
+			for(var i = 0; i < array.length; i++) {
+				object[item.data[key || '__jSQL_Key']] = array[i];
+			};
+			return object;
 		}
 	};
 	
