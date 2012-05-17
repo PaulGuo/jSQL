@@ -105,7 +105,7 @@
 				return this;
 			}
 			
-			this._buffer = this._currentDB;
+			this._buffer = this._currentDB; //reset the _buffer
 			this.where(function(data) {
 				return typeof(this._deep(data, key)) !== 'undefined';
 			});
