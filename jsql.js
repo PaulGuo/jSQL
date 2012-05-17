@@ -1,13 +1,34 @@
 /*
-    --------------- jSQL ---------------
+	--------------- jSQL ---------------
 	a SQL like database using javascript
 	website: http://jsql.injs.org
 	licence: MIT Licence
-	version: 0.1.0
+	version: 0.1.1 dev
+	
+	description: using jSQL to process the data easily.
 */
 
 (function() {
-	var _jSQL, jSQL, _DB={};
+	var push             = Array.prototype.push,
+		slice            = Array.prototype.slice,
+		unshift          = Array.prototype.unshift,
+		toString         = Object.prototype.toString,
+		hasOwnProperty   = Object.prototype.hasOwnProperty;
+
+	var nativeForEach      = Array.prototype.forEach,
+		nativeMap          = Array.prototype.map,
+		nativeReduce       = Array.prototype.reduce,
+		nativeReduceRight  = Array.prototype.reduceRight,
+		nativeFilter       = Array.prototype.filter,
+		nativeEvery        = Array.prototype.every,
+		nativeSome         = Array.prototype.some,
+		nativeIndexOf      = Array.prototype.indexOf,
+		nativeLastIndexOf  = Array.prototype.lastIndexOf,
+		nativeIsArray      = Array.isArray,
+		nativeKeys         = Object.keys,
+		nativeBind         = Function.prototype.bind;
+
+	var _jSQL, jSQL, _DB = {};
 	
 	if(typeof(this.jSQL) !== 'undefined') {
 		_jSQL = this.jSQL;
@@ -24,17 +45,45 @@
 			this._currentDB = null;
 			this._buffer = null;
 		},
+
+		/**
+		* create a new database
+		* @param dbname [String]
+		* @param db [Object]
+		*/
+
 		create: function(dbname, db) {
-			if(this._DB[dbname]) {
+			if(this._DB.hasOwnProperty(dbname)) {
 				throw('DB Already Exist.');
 			}
 			
 			this._DB[dbname] = db;
 			return this;
 		},
+
+		/**
+		* select an exist database as current
+		* @param dbname [String]
+		*/
+
 		use: function(dbname) {
+			if(!this._DB.hasOwnProperty(dbname)) {
+				throw('Database Not Exist.');
+			}
+
 			this._currentDB = this._DB[dbname];
 			return this;
+		},
+
+		/**
+		* drop an exist database
+		* @param dbname [String]
+		*/
+
+		drop: function(dbname) {
+			if(this._DB.hasOwnProperty(dbname)) {
+				delete this._DB[dbname];
+			}
 		},
 
 		/**
@@ -45,32 +94,43 @@
 			'a.b.c': return deep value a->b->c
 		*
 		*/
+
 		select: function(key) {
 			if(!this._currentDB) {
 				throw('Please Select Database First.');
 			}
 			
+			this._buffer = this._currentDB; //reset the _buffer
+			
 			if(key==='*') {
-				this._buffer = this._currentDB;
+				return this;
 			}
 			
-			this._buffer = this.iterate(function(data) {
-				return this._deep(data, key);
+			this.where(function(data) {
+				return typeof(this._deep(data, key)) !== 'undefined';
 			});
 			
 			return this;
 		},
 
-        /**
+		/**
+		* get the count of current result set
+		*/
+
+		count: function() {
+			return this._objectToArray(this._buffer).length;
+		},
+		
+		/**
          * calculate the count of spec key 
          * @param key 
                 '*':     return first package key count
 			    'a':	 return base value which key is 'a'
 			    'a.b.c': return deep value a->b->c
          * 
-         * @use [jSQL instance].count('a.b.c')
+         * @use [jSQL instance].total('a.b.c')
          */
-		count: function(key) {
+		total: function(key) {
 		    var rs = 0, scope = key.split('.');
             if(key === '*')
             this._buffer = this._currentDB;
@@ -87,7 +147,14 @@
             return rs;
 		},
 
-		orderby: function(field, callback ,order) {
+		/**
+		* sort the current result set
+		* @param field [String]
+		* @param callback [function]
+		* @param order [String <asc | desc>]
+		*/
+
+		orderby: function(field, callback, order) {
 			var _array = this._objectToArray(this._buffer);
 			var _this = this;
 			
@@ -108,28 +175,114 @@
 			this._buffer = this._arrayToObject(_array);
 			return this;
 		},
-		
-		iterate: function(fn) {
-			var _tmp = {};
+
+		where: function(fn) {
+			var _tmp = {}, _swap;
 			this._buffer = this._buffer || this._currentDB;
 			
 			for(var i in this._buffer) {
 				if(this._buffer.hasOwnProperty(i)) {
-					_tmp[i] = fn.call(this, this._buffer[i]) || this._buffer[i];
+					_swap = fn.call(this, this._buffer[i], i);
+					
+					if(_swap) {
+						_tmp[i] = this._buffer[i];
+					}
 				}
 			}
-			return _tmp;
+			this._buffer = _tmp;
+			return this;
 		},
-		
+
+		iterate: function(fn) {
+			var _swap;
+			this._buffer = this._buffer || this._currentDB;
+			
+			for(var i in this._buffer) {
+				if(this._buffer.hasOwnProperty(i)) {
+					_swap = fn.call(this, this._buffer[i]);
+					
+					if(_swap) {
+						this.update(i, _swap);
+					}
+				}
+			}
+		},
+
+		/**
+		* return the current result set
+		* @return [Object]
+		*/
+
 		findAll: function() {
 			return this._buffer;
 		},
-		
+
+		/**
+		* return a specified item of current result set
+		* if the key doesn't given, it'll return the first item
+		* @return [Object]
+		*/
+
 		find: function(key) {
+			if(!key) {
+				for(var i in this._buffer) {
+					if(key) {
+						break;
+					}
+					
+					if(this._buffer.hasOwnProperty(i)) {
+						key = i;
+					}
+				}
+			}
+			
 			return this._buffer[key];
 		},
 		
+		/**
+		* return the current result set as array list
+		* @return [Object]
+		*/
+
+		listAll: function() {
+			return this._objectToArray(this._buffer);
+		},
 		
+		/**
+		* update the current result set
+		* @param key [String]
+		* @param data [Object]
+		*/
+		
+		update: function(key, data) {
+			if(!this._currentDB) {
+				throw('Please Select Database First.');
+			}
+			
+			if(this._currentDB.hasOwnProperty(key)) {
+				this._currentDB[key] = data;
+			}
+		},
+		
+		/**
+		* limie the current result set
+		* @param start [Number]
+		* @param end [Number]
+		*/
+		
+		limit: function(start, end) {
+			var _tmp = this._objectToArray(this._buffer);
+			
+			if(!end) {
+				start = [0, end = start][0];
+			}
+			
+			this._buffer = this._arrayToObject(_tmp);
+		},
+
+		/**
+		* private methods
+		*/
 		
 		_deep: function(data, scope) {
 			var _tmp = data, scope = scope.split('.');
@@ -138,15 +291,15 @@
 			}
 			return _tmp;
 		},
-		
-		_isArray: function(obj) {
+
+		_isArray: nativeIsArray || function(obj) {
 			return toString.call(obj) === '[object Array]';
 		},
-		
+
 		_isObject: function(obj) {
 			return obj === Object(obj);
 		},
-		
+
 		_clone: function(obj) {
 			var _tmp = {};
 			
@@ -160,7 +313,7 @@
 			}
 			return _tmp;
 		},
-		
+
 		_objectToArray: function(object) {
 			var array = [], object = this._clone(object);
 			
@@ -173,7 +326,7 @@
 			
 			return array;
 		},
-		
+
 		_arrayToObject: function(array, key) {
 			var object = {};
 			
