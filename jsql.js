@@ -28,7 +28,7 @@
 		nativeKeys         = Object.keys,
 		nativeBind         = Function.prototype.bind;
 
-	var _jSQL, jSQL, _DB={};
+	var _jSQL, jSQL, _DB = {};
 	
 	if(typeof(this.jSQL) !== 'undefined') {
 		_jSQL = this.jSQL;
