@@ -93,7 +93,11 @@
 		
 		var data = db.select('*').orderby('data.depTime', buildDate, 'asc').where(function(o) {
 			return o.data.adultPrice < 52;
-		}).findAll();
+		}).listAll();
+		
+		var dataOne = db.select('*').orderby('data.depTime', buildDate, 'asc').where(function(o) {
+			return o.data.adultPrice < 52;
+		}).find();
 		
 		var count = db.select('*').orderby('data.depTime', buildDate, 'asc').count();
 
@@ -103,9 +107,10 @@
 			'{@/each}'
 		].join('');
 
-		document.write(juicer(tpl,{data:db._objectToArray(data)}));
+		document.write(juicer(tpl,{data:data}));
 		document.write('<br /> TOTAL COUNT: ' + count);
 		console.log(data);
+		console.log(dataOne);
 	</script>
 </body>
 </html>

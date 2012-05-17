@@ -195,6 +195,18 @@
 		*/
 
 		find: function(key) {
+			if(!key) {
+				for(var i in this._buffer) {
+					if(key) {
+						break;
+					}
+					
+					if(this._buffer.hasOwnProperty(i)) {
+						key = i;
+					}
+				}
+			}
+			
 			return this._buffer[key];
 		},
 		
