@@ -229,10 +229,12 @@
 		*/
 		
 		update: function(key, data) {
-			this._buffer = this._buffer || this._currentDB;
+			if(!this._currentDB) {
+				throw('Please Select Database First.');
+			}
 			
-			if(this._buffer.hasOwnProperty(key)) {
-				this._buffer[key] = data;
+			if(this._currentDB.hasOwnProperty(key)) {
+				this._currentDB[key] = data;
 			}
 		},
 
