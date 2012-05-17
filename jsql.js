@@ -198,10 +198,9 @@
 		},
 		
 		/**
-		* sort the current result set
-		* @param field [String]
-		* @param callback [function]
-		* @param order [String <asc | desc>]
+		* update the current result set
+		* @param key [String]
+		* @param data [Object]
 		*/
 		
 		update: function(key, data) {
