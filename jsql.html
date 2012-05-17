@@ -14,7 +14,7 @@
 </head>
 <body>
 	<script type="text/javascript">
-		var db = new jSQL();
+		var db = new jSQL(); //create a new database collection
 		var testDataA = {
 			'233970CA18511':{
 				data:{
@@ -82,8 +82,6 @@
 			}
 		};
 		
-		db.create('test',testDataA).use('test');
-		
 		var buildDate = function(dateString) {
 			if(typeof(dateString) !== 'string') return dateString;
 			var ymd = dateString.split(' ')[0].split('-');
@@ -91,15 +89,14 @@
 			return new Date(ymd[0],ymd[1]-1,ymd[2],time[0],time[1]);
 		};
 		
-		var data = db.select('*').orderby('data.depTime', buildDate, 'asc').where(function(o) {
+		db.create('test',testDataA).use('test');
+		db.select('*').orderby('data.depTime', buildDate, 'asc').where(function(o) {
 			return o.data.adultPrice < 52;
-		}).listAll();
+		});
 		
-		var dataOne = db.select('*').orderby('data.depTime', buildDate, 'asc').where(function(o) {
-			return o.data.adultPrice < 52;
-		}).find();
-		
-		var count = db.select('*').orderby('data.depTime', buildDate, 'asc').count();
+		var data = db.listAll();
+		var dataOne = db.find();
+		var count = db.count();
 
 		var tpl = [
 			'{@each data as item,index}',
@@ -108,7 +105,7 @@
 		].join('');
 
 		document.write(juicer(tpl,{data:data}));
-		document.write('<br /> TOTAL COUNT: ' + count);
+		document.write('<br /> TOTAL QUERY COUNT: ' + count);
 		console.log(data);
 		console.log(dataOne);
 	</script>
