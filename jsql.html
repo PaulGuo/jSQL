@@ -70,6 +70,7 @@
 					airLineCode: "CA",
 					airLineName: "中国国际航空公司",
 					cacheID: 217156,
+					cacheIDList: 217156,
 					depAirPortCode: "PEK",
 					depAirPortName: "北京首都",
 					depCityCode: "BJS",
@@ -97,6 +98,10 @@
 		var data = db.listAll();
 		var dataOne = db.find();
 		var count = db.count();
+		var total = db.total('data.cacheIDList');
+		var total = db.total(function(o) {
+			return o.data.adultPrice === 52;
+		});
 
 		var tpl = [
 			'{@each data as item,index}',
@@ -106,6 +111,7 @@
 
 		document.write(juicer(tpl,{data:data}));
 		document.write('<br /> TOTAL QUERY COUNT: ' + count);
+		document.write('<br /> TOTAL COUNT: ' + total);
 		console.log(data);
 		console.log(dataOne);
 	</script>

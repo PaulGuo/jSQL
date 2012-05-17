@@ -122,28 +122,32 @@
 		},
 		
 		/**
-		* calculate the count of spec key
+		* calculate the total of spec key
 		* @param key
 			'*':	 return first package key count
 			'a':	 return base value which key is 'a'
 			'a.b.c': return deep value a->b->c
 		*
-		* @use [jSQL instance].count('a.b.c')
+		* @use [jSQL instance].total('a.b.c')
 		*/
 		
-		total: function(key) {
-		    var rs = 0, scope = key.split('.');
-            if(key === '*')
-            this._buffer = this._currentDB;
-            for(var key in this._currentDB) {
-                if (this._currentDB.hasOwnProperty(key)) {
-                    var tmp = this._currentDB[key];
-                    for(var i=0,j=0; i<(j=scope.length); i++) {
-                        tmp = tmp[scope[i]];
-                        if(!!tmp && i == j - 1) rs++;
-                    }
-                }
-            }
+		total: function(scope) {
+		    var rs = 0, _tmp;
+			
+			for(var _key in this._currentDB) {
+				if(this._currentDB.hasOwnProperty(_key)) {
+					_tmp = scope === '*' ? 
+						this._currentDB[_key] : 
+						typeof(scope) === 'function' ? 
+							scope.call(this, this._currentDB[_key], _key) === true ? true : undefined : 
+							this._deep(this._currentDB[_key], scope);
+					
+					if(typeof(_tmp) !== 'undefined') {
+						rs++;
+					}
+				}
+			}
+			
             return rs;
 		},
 
