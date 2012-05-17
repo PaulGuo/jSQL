@@ -50,7 +50,7 @@
 			},
 			'233970CA18513':{
 				data:{
-					adultPrice: 51,
+					adultPrice: 50,
 					airLineCode: "CA",
 					airLineName: "中国国际航空公司",
 					cacheID: 217157,
@@ -91,17 +91,20 @@
 			return new Date(ymd[0],ymd[1]-1,ymd[2],time[0],time[1]);
 		};
 		
-		var data = db.select('*').orderby('data.depTime', buildDate, 'asc').where(function(data) {return data.adultPrice < 52;}).findAll();
+		var data = db.select('*').orderby('data.depTime', buildDate, 'asc').where(function(o) {
+			return o.data.adultPrice < 52;
+		}).findAll();
+		
 		var count = db.select('*').orderby('data.depTime', buildDate, 'asc').count();
 
 		var tpl = [
 			'{@each data as item,index}',
-				'(${index}) - ${item.__jSQL_Key} | ${item.data.depTime} | ${item.data.cacheID} <br/>',
+				'(${index}) - ${item.__jSQL_Key} | ${item.data.depTime} | ${item.data.cacheID} | ${item.data.adultPrice} <br/>',
 			'{@/each}'
 		].join('');
 
 		document.write(juicer(tpl,{data:db._objectToArray(data)}));
-		document.write('<br /> COUNT: ' + count);
+		document.write('<br /> TOTAL COUNT: ' + count);
 		console.log(data);
 	</script>
 </body>

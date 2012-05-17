@@ -104,8 +104,8 @@
 			}
 			
 			this._buffer = this._currentDB;
-			this._buffer = this.where(function(data) {
-				return this._deep(data, key);
+			this.where(function(data) {
+				return typeof(this._deep(data, key)) !== 'undefined';
 			});
 			
 			return this;
@@ -157,11 +157,12 @@
 					_swap = fn.call(this, this._buffer[i], i);
 					
 					if(_swap) {
-						_tmp[i] = _swap;
+						_tmp[i] = this._buffer[i];
 					}
 				}
 			}
-			return _tmp;
+			this._buffer = _tmp;
+			return this;
 		},
 
 		iterate: function(fn) {
@@ -195,6 +196,15 @@
 
 		find: function(key) {
 			return this._buffer[key];
+		},
+		
+		/**
+		* return the current result set as array list
+		* @return [Object]
+		*/
+
+		listAll: function() {
+			return this._objectToArray(this._buffer);
 		},
 		
 		/**
