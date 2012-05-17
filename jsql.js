@@ -104,7 +104,7 @@
 			}
 			
 			this._buffer = this._currentDB;
-			this._buffer = this.iterate(function(data) {
+			this._buffer = this.where(function(data) {
 				return this._deep(data, key);
 			});
 			
@@ -149,27 +149,34 @@
 		},
 
 		where: function(fn) {
-			var _tmp = {};
+			var _tmp = {}, _swap;
 			this._buffer = this._buffer || this._currentDB;
 			
 			for(var i in this._buffer) {
 				if(this._buffer.hasOwnProperty(i)) {
-					_tmp[i] = fn.call(this, this._buffer[i]);
+					_swap = fn.call(this, this._buffer[i]);
+					
+					if(_swap) {
+						_tmp[i] = _swap;
+					}
 				}
 			}
 			return _tmp;
 		},
 
 		iterate: function(fn) {
-			var _tmp = {};
+			var _swap;
 			this._buffer = this._buffer || this._currentDB;
 			
 			for(var i in this._buffer) {
 				if(this._buffer.hasOwnProperty(i)) {
-					_tmp[i] = fn.call(this, this._buffer[i]);
+					_swap = fn.call(this, this._buffer[i]);
+					
+					if(_swap) {
+						this.update(i, _swap);
+					}
 				}
 			}
-			return _tmp;
 		},
 
 		/**
@@ -188,6 +195,21 @@
 
 		find: function(key) {
 			return this._buffer[key];
+		},
+		
+		/**
+		* sort the current result set
+		* @param field [String]
+		* @param callback [function]
+		* @param order [String <asc | desc>]
+		*/
+		
+		update: function(key, data) {
+			this._buffer = this._buffer || this.currentDB;
+			
+			if(this._buffer.hasOwnProperty(key)) {
+				this._buffer[key] = data;
+			}
 		},
 
 		/**

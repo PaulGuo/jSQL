@@ -149,7 +149,7 @@
 			return new Date(ymd[0],ymd[1]-1,ymd[2],time[0],time[1]);
 		};
 		
-		var data = db.select('data').orderby('depTime', buildDate , 'asc').findAll();
+		var data = db.select('*').orderby('data.depTime', buildDate , 'asc').findAll();
 
 		var tpl = [
 			'{@each data as item,index}',
