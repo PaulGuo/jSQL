@@ -237,6 +237,22 @@
 				this._currentDB[key] = data;
 			}
 		},
+		
+		/**
+		* limie the current result set
+		* @param start [Number]
+		* @param end [Number]
+		*/
+		
+		limit: function(start, end) {
+			var _tmp = this._objectToArray(this._buffer);
+			
+			if(!end) {
+				start = [0, end = start][0];
+			}
+			
+			this._buffer = this._arrayToObject(_tmp);
+		},
 
 		/**
 		* private methods
