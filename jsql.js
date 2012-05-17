@@ -120,6 +120,32 @@
 		count: function() {
 			return this._objectToArray(this._buffer).length;
 		},
+		
+		/**
+        * calculate the count of spec key
+        * @param key
+			'*':	 return first package key count
+			'a':	 return base value which key is 'a'
+			'a.b.c': return deep value a->b->c
+        *
+        * @use [jSQL instance].count('a.b.c')
+        */
+		
+		total: function(key) {
+		    var rs = 0, scope = key.split('.');
+            if(key === '*')
+            this._buffer = this._currentDB;
+            for(var key in this._currentDB) {
+                if (this._currentDB.hasOwnProperty(key)) {
+                    var tmp = this._currentDB[key];
+                    for(var i=0,j=0; i<(j=scope.length); i++) {
+                        tmp = tmp[scope[i]];
+                        if(!!tmp && i == j - 1) rs++;
+                    }
+                }
+            }
+            return rs;
+		},
 
 		/**
 		* sort the current result set
