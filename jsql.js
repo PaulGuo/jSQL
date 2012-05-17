@@ -7,6 +7,25 @@
 */
 
 (function() {
+	var push             = Array.prototype.push,
+		slice            = Array.prototype.slice,
+		unshift          = Array.prototype.unshift,
+		toString         = Object.prototype.toString,
+		hasOwnProperty   = Object.prototype.hasOwnProperty;
+
+	var nativeForEach      = Array.prototype.forEach,
+		nativeMap          = Array.prototype.map,
+		nativeReduce       = Array.prototype.reduce,
+		nativeReduceRight  = Array.prototype.reduceRight,
+		nativeFilter       = Array.prototype.filter,
+		nativeEvery        = Array.prototype.every,
+		nativeSome         = Array.prototype.some,
+		nativeIndexOf      = Array.prototype.indexOf,
+		nativeLastIndexOf  = Array.prototype.lastIndexOf,
+		nativeIsArray      = Array.isArray,
+		nativeKeys         = Object.keys,
+		nativeBind         = Function.prototype.bind;
+
 	var _jSQL, jSQL, _DB={};
 	
 	if(typeof(this.jSQL) !== 'undefined') {
@@ -129,9 +148,16 @@
 			return this;
 		},
 
-		where: function() {
-			this._buffer = _currentDB;
-			return this;
+		where: function(fn) {
+			var _tmp = {};
+			this._buffer = this._buffer || this._currentDB;
+			
+			for(var i in this._buffer) {
+				if(this._buffer.hasOwnProperty(i)) {
+					_tmp[i] = fn.call(this, this._buffer[i]);
+				}
+			}
+			return _tmp;
 		},
 
 		iterate: function(fn) {
@@ -140,7 +166,7 @@
 			
 			for(var i in this._buffer) {
 				if(this._buffer.hasOwnProperty(i)) {
-					_tmp[i] = fn.call(this, this._buffer[i]) || this._buffer[i];
+					_tmp[i] = fn.call(this, this._buffer[i]);
 				}
 			}
 			return _tmp;
@@ -176,7 +202,7 @@
 			return _tmp;
 		},
 
-		_isArray: function(obj) {
+		_isArray: nativeIsArray || function(obj) {
 			return toString.call(obj) === '[object Array]';
 		},
 
