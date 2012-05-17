@@ -4,6 +4,8 @@
 	website: http://jsql.injs.org
 	licence: MIT Licence
 	version: 0.1.0
+	
+	description: using jSQL to process the data easily.
 */
 
 (function() {
