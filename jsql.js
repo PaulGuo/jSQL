@@ -3,7 +3,7 @@
 	a SQL like database using javascript
 	website: http://jsql.injs.org
 	licence: MIT Licence
-	version: 0.1.0
+	version: 0.1.1 dev
 	
 	description: using jSQL to process the data easily.
 */
