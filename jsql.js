@@ -1,5 +1,5 @@
 /*
-	--------------- jSQL ---------------
+    --------------- jSQL ---------------
 	a SQL like database using javascript
 	website: http://jsql.injs.org
 	licence: MIT Licence
@@ -23,7 +23,6 @@
 			this._DB = _DB;
 			this._currentDB = null;
 			this._buffer = null;
-			this._scopeChain = null;
 		},
 		create: function(dbname, db) {
 			if(this._DB[dbname]) {
@@ -37,6 +36,7 @@
 			this._currentDB = this._DB[dbname];
 			return this;
 		},
+
 		/**
 		* select object from currentDB
 		* @param key
@@ -46,8 +46,6 @@
 		*
 		*/
 		select: function(key) {
-			this._scopeChain = null;
-			
 			if(!this._currentDB) {
 				throw('Please Select Database First.');
 			}
@@ -56,33 +54,58 @@
 				this._buffer = this._currentDB;
 			}
 			
-			this._scopeChain = key;
-			
 			this._buffer = this.iterate(function(data) {
-				return this._deep(data, this._scopeChain);
+				return this._deep(data, key);
 			});
 			
 			return this;
 		},
-		count: function() {
-			
+
+        /**
+         * calculate the count of spec key 
+         * @param key 
+                '*':     return first package key count
+			    'a':	 return base value which key is 'a'
+			    'a.b.c': return deep value a->b->c
+         * 
+         * @use [jSQL instance].count('a.b.c')
+         */
+		count: function(key) {
+		    var rs = 0, scope = key.split('.');
+            if(key === '*')
+            this._buffer = this._currentDB;
+            for(var key in this._currentDB) {
+                if (this._currentDB.hasOwnProperty(key)) {
+                    var tmp = this._currentDB[key];
+                    for(var i=0,j=0; i<(j=scope.length); i++) {
+                        tmp = tmp[scope[i]];
+                        if(!!tmp && i == j - 1) rs++;
+                    }
+                }
+            }
+
+            return rs;
 		},
-		orderby: function(field, order) {
+
+		orderby: function(field, callback ,order) {
 			var _array = this._objectToArray(this._buffer);
 			var _this = this;
 			
-			if(order && order.toLowerCase() === 'asc') {
-				_array.sort(function(a, b) {
-					return _this._deep(a, field) - _this._deep(b, field);
-				});
-			} else {
-				_array.sort(function(a, b) {
-					return _this._deep(b, field) - _this._deep(a, field);
-				});
+			if(typeof(callback) !== 'function') {
+				callback = [order, order = callback][0];
 			}
 			
-			_array = this._arrayToObject(_array);
-			this._buffer = _array;
+			_array.sort(function(a, b) {
+				a = _this._deep(a, field);
+				b = _this._deep(b, field);
+				if(callback) {
+					a = callback(a);
+					b = callback(b);
+				}
+				return  order && order.toLowerCase() === 'asc' ? a - b : b - a;
+			});
+			
+			this._buffer = this._arrayToObject(_array);
 			return this;
 		},
 		where: function() {
@@ -102,6 +125,9 @@
 		},
 		findAll: function() {
 			return this._buffer;
+		},
+		find: function(key) {
+			return this._buffer[key];
 		},
 		
 		_deep: function(data, scope) {
@@ -132,20 +158,24 @@
 		},
 		_objectToArray: function(object) {
 			var array = [], object = this._clone(object);
+			
 			for(var i in object) {
 				if(object.hasOwnProperty(i)) {
 					object[i].__jSQL_Key = i;
 					array.push(object[i]);
 				}
 			}
+			
 			return array;
 		},
 		_arrayToObject: function(array, key) {
 			var object = {};
+			
 			for(var i = 0; i < array.length; i++) {
 				object[array[i][key || '__jSQL_Key']] = array[i];
 				delete object[array[i][key || '__jSQL_Key']][key || '__jSQL_Key'];
 			};
+			
 			return object;
 		}
 	};
