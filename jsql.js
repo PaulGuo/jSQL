@@ -53,7 +53,7 @@
 		*/
 
 		create: function(dbname, db) {
-			if(this._DB[dbname]) {
+			if(this._DB.hasOwnProperty(dbname)) {
 				throw('DB Already Exist.');
 			}
 			
@@ -67,7 +67,7 @@
 		*/
 
 		use: function(dbname) {
-			if(!this._DB[dbname]) {
+			if(!this._DB.hasOwnProperty(dbname)) {
 				throw('Database Not Exist.');
 			}
 
@@ -81,7 +81,7 @@
 		*/
 
 		drop: function(dbname) {
-			if(dbname in this._DB) {
+			if(this._DB.hasOwnProperty(dbname)) {
 				delete this._DB[dbname];
 			}
 		},
@@ -100,12 +100,12 @@
 				throw('Please Select Database First.');
 			}
 			
+			this._buffer = this._currentDB; //reset the _buffer
+			
 			if(key==='*') {
-				this._buffer = this._currentDB;
 				return this;
 			}
 			
-			this._buffer = this._currentDB; //reset the _buffer
 			this.where(function(data) {
 				return typeof(this._deep(data, key)) !== 'undefined';
 			});
@@ -193,6 +193,7 @@
 
 		/**
 		* return a specified item of current result set
+		* if the key doesn't given, it'll return the first item
 		* @return [Object]
 		*/
 
@@ -228,7 +229,7 @@
 		*/
 		
 		update: function(key, data) {
-			this._buffer = this._buffer || this.currentDB;
+			this._buffer = this._buffer || this._currentDB;
 			
 			if(this._buffer.hasOwnProperty(key)) {
 				this._buffer[key] = data;
