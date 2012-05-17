@@ -108,10 +108,7 @@
 			this._buffer = this._arrayToObject(_array);
 			return this;
 		},
-		where: function() {
-			this._buffer = _currentDB;
-			return this;
-		},
+		
 		iterate: function(fn) {
 			var _tmp = {};
 			this._buffer = this._buffer || this._currentDB;
@@ -123,12 +120,16 @@
 			}
 			return _tmp;
 		},
+		
 		findAll: function() {
 			return this._buffer;
 		},
+		
 		find: function(key) {
 			return this._buffer[key];
 		},
+		
+		
 		
 		_deep: function(data, scope) {
 			var _tmp = data, scope = scope.split('.');
@@ -137,12 +138,15 @@
 			}
 			return _tmp;
 		},
+		
 		_isArray: function(obj) {
 			return toString.call(obj) === '[object Array]';
 		},
+		
 		_isObject: function(obj) {
 			return obj === Object(obj);
 		},
+		
 		_clone: function(obj) {
 			var _tmp = {};
 			
@@ -156,6 +160,7 @@
 			}
 			return _tmp;
 		},
+		
 		_objectToArray: function(object) {
 			var array = [], object = this._clone(object);
 			
@@ -168,6 +173,7 @@
 			
 			return array;
 		},
+		
 		_arrayToObject: function(array, key) {
 			var object = {};
 			
