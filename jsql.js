@@ -154,7 +154,7 @@
 			
 			for(var i in this._buffer) {
 				if(this._buffer.hasOwnProperty(i)) {
-					_swap = fn.call(this, this._buffer[i]);
+					_swap = fn.call(this, this._buffer[i], i);
 					
 					if(_swap) {
 						_tmp[i] = _swap;
