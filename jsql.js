@@ -3,7 +3,7 @@
 	a SQL like database using javascript
 	website: http://jsql.injs.org
 	licence: MIT Licence
-	version: 0.1.1 dev
+	version: 0.1.2 dev
 	
 	description: using jSQL to process the data easily.
 */
@@ -186,7 +186,21 @@
 			
 			for(var i in this._buffer) {
 				if(this._buffer.hasOwnProperty(i)) {
-					_swap = fn.call(this, this._buffer[i], i);
+                    if(typeof(fn) === 'function') {
+					    _swap = fn.call(this, this._buffer[i], i);
+                    }
+
+                    if(this._isArray(fn)) {
+                        _swap = false;
+
+                        for(var f in fn) {
+                            if(fn.hasOwnProperty(f)) {
+                                if(fn[f].call(this, this._buffer[i], i)) {
+                                    _swap = true;
+                                }
+                            }
+                        }
+                    }
 					
 					if(_swap) {
 						_tmp[i] = this._buffer[i];
