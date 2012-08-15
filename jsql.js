@@ -355,6 +355,29 @@
             };
             
             return object;
+        },
+
+        _each: function(list, fn) {
+            if(nativeForEach) {
+                list.forEach(fn);
+                return;
+            }
+
+            for(var i = 0; i < list.length; i++) {
+                fn(list[i], i, list);
+            }
+        },
+
+        _keygen: function(object) {
+            var that = this;
+            var baseRef = [].slice.call(arguments, 1);
+            var key = '';
+
+            that._each(baseRef, function(o, i, r) {
+                key += object[o];
+            });
+
+            return key;
         }
     };
 
