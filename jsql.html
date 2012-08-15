@@ -4,7 +4,7 @@
 	<meta charset="UTF-8">
 	<title></title>
 	<script type="text/javascript" src="jsql.js"></script>
-	<script type="text/javascript" src="../juicer/juicer.js"></script>
+	<script type="text/javascript" src="../juicer/build/juicer-min.js"></script>
 	<style type="text/css">
 		body {
 			font-size: 13px;
@@ -14,7 +14,8 @@
 </head>
 <body>
 	<script type="text/javascript">
-		var db = new jSQL(); //create a new database collection
+		//var db = new jSQL(); //create a new database collection
+		var db = jSQL; //create a new database collection
 		var testDataA = {
 			'233970CA18511':{
 				data:{
@@ -65,6 +66,23 @@
 				html:'中国国际航空公司'
 			},
 			'233970CA18514':{
+				data:{
+					adultPrice: 51,
+					airLineCode: "CA",
+					airLineName: "中国国际航空公司",
+					cacheID: 217156,
+					cacheIDList: 217156,
+					depAirPortCode: "PEK",
+					depAirPortName: "北京首都",
+					depCityCode: "BJS",
+					depCityName: "北京",
+					depDate: "14:05",
+					depDay: "2012-06-23",
+					depTime: "2012-06-23 20:05",
+				},
+				html:'中国国际航空公司'
+			},
+			'0':{
 				data:{
 					adultPrice: 51,
 					airLineCode: "CA",

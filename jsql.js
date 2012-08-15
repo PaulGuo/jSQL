@@ -1,9 +1,9 @@
 /*
     --------------- jSQL ---------------
     a SQL like database using javascript
-    website: http://jsql.injs.org
+    website: http://jsql.us
     licence: MIT Licence
-    version: 0.1.2 dev
+    version: 0.2.0 dev
     
     description: using jSQL to process the data easily.
 */
@@ -357,6 +357,8 @@
             return object;
         }
     };
+
+    jSQL = new jSQL();
     
     typeof(module) !== 'undefined' && module.exports ? module.exports = jSQL : this.jSQL = jSQL;
 })();
