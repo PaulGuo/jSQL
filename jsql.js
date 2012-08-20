@@ -53,8 +53,19 @@
         */
 
         create: function(dbname, db) {
+            var indexList;
+
             if(this._DB.hasOwnProperty(dbname)) {
                 throw('DB Already Exist.');
+            }
+
+            if(this._isArray(db)) {
+                indexList = this._listSlice(arguments, '2:');
+                this._appendKey(db, indexList);
+            }
+
+            if(this._isObject(db)) {
+                db = this._objectToArray(db);
             }
             
             this._DB[dbname] = db;
@@ -338,7 +349,7 @@
             
             for(var i in object) {
                 if(object.hasOwnProperty(i)) {
-                    object[i].__jSQL_Key = i;
+                    object[i].jSQL_Key = i;
                     array.push(object[i]);
                 }
             }
@@ -350,8 +361,8 @@
             var object = {};
             
             for(var i = 0; i < array.length; i++) {
-                object[array[i][key || '__jSQL_Key']] = array[i];
-                delete object[array[i][key || '__jSQL_Key']][key || '__jSQL_Key'];
+                object[array[i][key || 'jSQL_Key']] = array[i];
+                delete object[array[i][key || 'jSQL_Key']][key || 'jSQL_Key'];
             };
             
             return object;
@@ -368,16 +379,37 @@
             }
         },
 
-        _keygen: function(object) {
+        _keygen: function(object, indexList) {
             var that = this;
             var baseRef = [].slice.call(arguments, 1);
             var key = '';
+
+            if(that._isArray(indexList)) {
+                baseRef = indexList;
+            }
 
             that._each(baseRef, function(o, i, r) {
                 key += object[o];
             });
 
             return key;
+        },
+
+        _listSlice: function(list, range) {
+            var start, end;
+
+            list = [].slice.call(list);
+            range = range.split(':');
+            start = range[0] || 0;
+            end = range.length > 1 ? range[1] || list.length : list.length;
+            return [].slice.call(list, start, end);
+        },
+
+        _appendKey: function(list, indexList) {
+            var that = this;
+            that._each(list, function(o, i, r) {
+                o['jSQL_Key'] = that._keygen(o, indexList);
+            });
         }
     };
 
