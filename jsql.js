@@ -244,7 +244,7 @@
         */
 
         findAll: function() {
-            return this._buffer;
+            return this._clone(this._buffer);
         },
 
         /**
@@ -301,13 +301,17 @@
         */
         
         limit: function(start, end) {
-            var _tmp = this._objectToArray(this._buffer);
+            var _tmp = this._buffer;
+            var limit;
             
             if(!end) {
                 start = [0, end = start][0];
             }
+
+            limit = start + ':' + (start + end);
             
-            this._buffer = this._arrayToObject(_tmp);
+            this._buffer = this._listSlice(_tmp, limit);
+            return this;
         },
 
         /**
