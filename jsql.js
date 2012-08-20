@@ -192,7 +192,7 @@
         },
 
         where: function(fn) {
-            var _tmp = {}, _swap;
+            var _tmp = [], _swap;
             this._buffer = this._buffer || this._currentDB;
             
             for(var i in this._buffer) {

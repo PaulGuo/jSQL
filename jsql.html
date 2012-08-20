@@ -130,6 +130,7 @@
         document.write(juicer(tpl,{data:data}));
         document.write('<br /> TOTAL QUERY COUNT: ' + count);
         document.write('<br /> TOTAL COUNT: ' + total);
+        document.write('<br />');
         document.write(juicer(tpl,{data:db.limit(0, 2).listAll()}));
         console.log(data);
         console.log(dataOne);
