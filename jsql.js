@@ -244,7 +244,7 @@
         */
 
         findAll: function() {
-            return this._clone(this._buffer);
+            return this._clone(this._arrayToObject(this._buffer));
         },
 
         /**
