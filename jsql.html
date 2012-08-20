@@ -1,139 +1,139 @@
 <!DOCTYPE HTML>
 <html lang="en-US">
 <head>
-	<meta charset="UTF-8">
-	<title></title>
-	<script type="text/javascript" src="jsql.js"></script>
-	<script type="text/javascript" src="../juicer/build/juicer-min.js"></script>
-	<style type="text/css">
-		body {
-			font-size: 13px;
-			font-family: Tahoma;
-		}
-	</style>
+    <meta charset="UTF-8">
+    <title></title>
+    <script type="text/javascript" src="jsql.js"></script>
+    <script type="text/javascript" src="../juicer/build/juicer-min.js"></script>
+    <style type="text/css">
+        body {
+            font-size: 13px;
+            font-family: Tahoma;
+        }
+    </style>
 </head>
 <body>
-	<script type="text/javascript">
-		//var db = new jSQL(); //create a new database collection
-		var db = jSQL; //create a new database collection
-		var testDataA = {
-			'233970CA18511':{
-				data:{
-					adultPrice: 51,
-					airLineCode: "CA",
-					airLineName: "中国国际航空公司",
-					cacheID: 217159,
-					depAirPortCode: "PEK",
-					depAirPortName: "北京首都",
-					depCityCode: "BJS",
-					depCityName: "北京",
-					depDate: "08:35",
-					depDay: "2012-06-23",
-					depTime: "2012-06-23 08:35"
-				},
-				html: '中国国际航空公司'
-			},
-			'233970CA18512':{
-				data:{
-					adultPrice: 52,
-					airLineCode: "CA",
-					airLineName: "中国国际航空公司",
-					cacheID: 217158,
-					depAirPortCode: "PEK",
-					depAirPortName: "北京首都",
-					depCityCode: "BJS",
-					depCityName: "北京",
-					depDate: "14:05",
-					depDay: "2012-06-23",
-					depTime: "2012-06-23 12:05",
-				},
-				html:'中国国际航空公司'
-			},
-			'233970CA18513':{
-				data:{
-					adultPrice: 50,
-					airLineCode: "CA",
-					airLineName: "中国国际航空公司",
-					cacheID: 217157,
-					depAirPortCode: "PEK",
-					depAirPortName: "北京首都",
-					depCityCode: "BJS",
-					depCityName: "北京",
-					depDate: "14:05",
-					depDay: "2012-06-23",
-					depTime: "2012-06-22 14:05",
-				},
-				html:'中国国际航空公司'
-			},
-			'233970CA18514':{
-				data:{
-					adultPrice: 51,
-					airLineCode: "CA",
-					airLineName: "中国国际航空公司",
-					cacheID: 217156,
-					cacheIDList: 217156,
-					depAirPortCode: "PEK",
-					depAirPortName: "北京首都",
-					depCityCode: "BJS",
-					depCityName: "北京",
-					depDate: "14:05",
-					depDay: "2012-06-23",
-					depTime: "2012-06-23 20:05",
-				},
-				html:'中国国际航空公司'
-			},
-			'0123':{
-				data:{
-					adultPrice: 51,
-					airLineCode: "CA",
-					airLineName: "中国国际航空公司",
-					cacheID: 217156,
-					cacheIDList: 217156,
-					depAirPortCode: "PEK",
-					depAirPortName: "北京首都",
-					depCityCode: "BJS",
-					depCityName: "北京",
-					depDate: "14:05",
-					depDay: "2012-06-23",
-					depTime: "2012-06-23 20:05",
-				},
-				html:'中国国际航空公司'
-			}
-		};
-		
-		var buildDate = function(dateString) {
-			if(typeof(dateString) !== 'string') return dateString;
-			var ymd = dateString.split(' ')[0].split('-');
-			var time = dateString.split(' ')[1].split(':');
-			return new Date(ymd[0],ymd[1]-1,ymd[2],time[0],time[1]);
-		};
-		
-		db.create('test',testDataA).use('test');
-		db.select('*').orderby('data.depTime', buildDate, 'asc').where(function(o) {
-			return o.data.adultPrice < 52;
-		});
-		
-		var data = db.listAll();
-		var dataOne = db.find();
-		var count = db.count();
-		var total = db.total('data.cacheIDList');
-		var total = db.total(function(o) {
-			return o.data.adultPrice === 52;
-		});
+    <script type="text/javascript">
+        //var db = new jSQL(); //create a new database collection
+        var db = jSQL; //create a new database collection
+        var testDataA = {
+            '233970CA18511':{
+                data:{
+                    adultPrice: 51,
+                    airLineCode: "CA",
+                    airLineName: "中国国际航空公司",
+                    cacheID: 217159,
+                    depAirPortCode: "PEK",
+                    depAirPortName: "北京首都",
+                    depCityCode: "BJS",
+                    depCityName: "北京",
+                    depDate: "08:35",
+                    depDay: "2012-06-23",
+                    depTime: "2012-06-23 08:35"
+                },
+                html: '中国国际航空公司'
+            },
+            '233970CA18512':{
+                data:{
+                    adultPrice: 52,
+                    airLineCode: "CA",
+                    airLineName: "中国国际航空公司",
+                    cacheID: 217158,
+                    depAirPortCode: "PEK",
+                    depAirPortName: "北京首都",
+                    depCityCode: "BJS",
+                    depCityName: "北京",
+                    depDate: "14:05",
+                    depDay: "2012-06-23",
+                    depTime: "2012-06-23 12:05",
+                },
+                html:'中国国际航空公司'
+            },
+            '233970CA18513':{
+                data:{
+                    adultPrice: 50,
+                    airLineCode: "CA",
+                    airLineName: "中国国际航空公司",
+                    cacheID: 217157,
+                    depAirPortCode: "PEK",
+                    depAirPortName: "北京首都",
+                    depCityCode: "BJS",
+                    depCityName: "北京",
+                    depDate: "14:05",
+                    depDay: "2012-06-23",
+                    depTime: "2012-06-22 14:05",
+                },
+                html:'中国国际航空公司'
+            },
+            '233970CA18514':{
+                data:{
+                    adultPrice: 51,
+                    airLineCode: "CA",
+                    airLineName: "中国国际航空公司",
+                    cacheID: 217156,
+                    cacheIDList: 217156,
+                    depAirPortCode: "PEK",
+                    depAirPortName: "北京首都",
+                    depCityCode: "BJS",
+                    depCityName: "北京",
+                    depDate: "14:05",
+                    depDay: "2012-06-23",
+                    depTime: "2012-06-23 20:05",
+                },
+                html:'中国国际航空公司'
+            },
+            '0123':{
+                data:{
+                    adultPrice: 51,
+                    airLineCode: "CA",
+                    airLineName: "中国国际航空公司",
+                    cacheID: 217156,
+                    cacheIDList: 217156,
+                    depAirPortCode: "PEK",
+                    depAirPortName: "北京首都",
+                    depCityCode: "BJS",
+                    depCityName: "北京",
+                    depDate: "14:05",
+                    depDay: "2012-06-23",
+                    depTime: "2012-06-23 20:05",
+                },
+                html:'中国国际航空公司'
+            }
+        };
+        
+        var buildDate = function(dateString) {
+            if(typeof(dateString) !== 'string') return dateString;
+            var ymd = dateString.split(' ')[0].split('-');
+            var time = dateString.split(' ')[1].split(':');
+            return new Date(ymd[0],ymd[1]-1,ymd[2],time[0],time[1]);
+        };
+        
+        db.create('test',testDataA).use('test');
+        db.select('*').orderby('data.depTime', buildDate, 'asc').where(function(o) {
+            return o.data.adultPrice < 52;
+        });
+        
+        var data = db.listAll();
+        var dataOne = db.find();
+        var count = db.count();
+        var total = db.total('data.cacheIDList');
+        var total = db.total(function(o) {
+            return o.data.adultPrice === 52;
+        });
 
-		var tpl = [
-			'{@each data as item,index}',
-				'(${index}) - ${item.jSQL_Key} | ${item.data.depTime} | ${item.data.cacheID} | ${item.data.adultPrice} <br/>',
-			'{@/each}'
-		].join('');
+        var tpl = [
+            '{@each data as item,index}',
+                '(${index}) - ${item.jSQL_Key} | ${item.data.depTime} | ${item.data.cacheID} | ${item.data.adultPrice} <br/>',
+            '{@/each}'
+        ].join('');
 
-		document.write(juicer(tpl,{data:data}));
-		document.write('<br /> TOTAL QUERY COUNT: ' + count);
-		document.write('<br /> TOTAL COUNT: ' + total);
+        document.write(juicer(tpl,{data:data}));
+        document.write('<br /> TOTAL QUERY COUNT: ' + count);
+        document.write('<br /> TOTAL COUNT: ' + total);
         document.write(juicer(tpl,{data:db.limit(0, 2).listAll()}));
-		console.log(data);
-		console.log(dataOne);
+        console.log(data);
+        console.log(dataOne);
         console.log(db.limit(0, 2).listAll());
-	</script>
+    </script>
 </body>
 </html>
