@@ -129,7 +129,7 @@
         */
 
         count: function() {
-            return this._objectToArray(this._buffer).length;
+            return this._buffer.length;
         },
         
         /**
@@ -170,7 +170,7 @@
         */
 
         orderby: function(field, callback, order) {
-            var _array = this._objectToArray(this._buffer);
+            var _array = this._buffer;
             var _this = this;
             
             if(typeof(callback) !== 'function') {
@@ -187,7 +187,7 @@
                 return  order && order.toLowerCase() === 'asc' ? a - b : b - a;
             });
             
-            this._buffer = this._arrayToObject(_array);
+            this._buffer = _array;
             return this;
         },
 
@@ -275,7 +275,7 @@
         */
 
         listAll: function() {
-            return this._objectToArray(this._buffer);
+            return this._clone(this._buffer);
         },
         
         /**
