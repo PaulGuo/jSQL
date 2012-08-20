@@ -266,7 +266,7 @@
                 }
             }
             
-            return this._buffer[key];
+            return this._clone(this._buffer[key]);
         },
         
         /**

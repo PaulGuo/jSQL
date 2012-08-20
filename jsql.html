@@ -100,6 +100,90 @@
                 html:'中国国际航空公司'
             }
         };
+        var testDataB = [
+            {
+                data:{
+                    adultPrice: 51,
+                    airLineCode: "CA",
+                    airLineName: "中国国际航空公司",
+                    cacheID: 217159,
+                    depAirPortCode: "PEK",
+                    depAirPortName: "北京首都",
+                    depCityCode: "BJS",
+                    depCityName: "北京",
+                    depDate: "08:35",
+                    depDay: "2012-06-23",
+                    depTime: "2012-06-23 08:35"
+                },
+                html: '中国国际航空公司'
+            },
+            {
+                data:{
+                    adultPrice: 52,
+                    airLineCode: "CA",
+                    airLineName: "中国国际航空公司",
+                    cacheID: 217158,
+                    depAirPortCode: "PEK",
+                    depAirPortName: "北京首都",
+                    depCityCode: "BJS",
+                    depCityName: "北京",
+                    depDate: "14:05",
+                    depDay: "2012-06-23",
+                    depTime: "2012-06-23 12:05",
+                },
+                html:'中国国际航空公司'
+            },
+            {
+                data:{
+                    adultPrice: 50,
+                    airLineCode: "CA",
+                    airLineName: "中国国际航空公司",
+                    cacheID: 217157,
+                    depAirPortCode: "PEK",
+                    depAirPortName: "北京首都",
+                    depCityCode: "BJS",
+                    depCityName: "北京",
+                    depDate: "14:05",
+                    depDay: "2012-06-23",
+                    depTime: "2012-06-22 14:05",
+                },
+                html:'中国国际航空公司'
+            },
+            {
+                data:{
+                    adultPrice: 51,
+                    airLineCode: "CA",
+                    airLineName: "中国国际航空公司",
+                    cacheID: 217156,
+                    cacheIDList: 217156,
+                    depAirPortCode: "PEK",
+                    depAirPortName: "北京首都",
+                    depCityCode: "BJS",
+                    depCityName: "北京",
+                    depDate: "14:05",
+                    depDay: "2012-06-23",
+                    depTime: "2012-06-23 20:05",
+                },
+                html:'中国国际航空公司'
+            },
+            {
+                data:{
+                    adultPrice: 51,
+                    airLineCode: "CA",
+                    airLineName: "中国国际航空公司",
+                    cacheID: 217156,
+                    cacheIDList: 217156,
+                    depAirPortCode: "PEK",
+                    depAirPortName: "北京首都",
+                    depCityCode: "BJS",
+                    depCityName: "北京",
+                    depDate: "14:05",
+                    depDay: "2012-06-23",
+                    depTime: "2012-06-23 20:05",
+                },
+                html:'中国国际航空公司'
+            }
+        ];
         
         var buildDate = function(dateString) {
             if(typeof(dateString) !== 'string') return dateString;
@@ -109,6 +193,7 @@
         };
         
         db.create('test',testDataA).use('test');
+        db.create('test2',testDataB, 'data.cacheID', 'data.depAirPortCode');
         db.select('*').orderby('data.depTime', buildDate, 'asc').where(function(o) {
             return o.data.adultPrice < 52;
         });
