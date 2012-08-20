@@ -295,7 +295,7 @@
         },
         
         /**
-        * limie the current result set
+        * limit the current result set
         * @param start [Number]
         * @param end [Number]
         */
