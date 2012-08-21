@@ -83,6 +83,7 @@
             }
 
             this._currentDB = this._DB[dbname];
+            this._currentDBName = dbname;
             return this;
         },
 
@@ -99,6 +100,10 @@
 
         dbs: function() {
             return this._keys(this._DB);
+        },
+
+        db: function() {
+            return this._currentDBName;
         },
 
         /**
