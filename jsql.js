@@ -65,7 +65,7 @@
                 this._appendKey(db, indexList);
             }
 
-            if(this._isObject(db)) {
+            if(this._isPlainObject(db)) {
                 db = this._objectToArray(db);
             }
             
@@ -364,6 +364,10 @@
             return obj === Object(obj);
         },
 
+        _isPlainObject: function(obj) {
+            return this._isObject(obj) && obj.constructor === Object;
+        },
+
         _clone: function (obj) {
             if(obj == null || typeof(obj) != 'object') {
                 return obj;
@@ -422,7 +426,7 @@
             }
 
             that._each(baseRef, function(o, i, r) {
-                key += object[o];
+                key += that._deep(object, o);
             });
 
             return key;
