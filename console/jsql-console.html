@@ -24,6 +24,8 @@ version 0.2.0-dev.
     <script type="text/javascript">
         var screen = $('#screen');
         var command = $('#command');
+        var bash_history = [];
+        var bash_cursor = 0;
 
         var args = function(evt) {
             return $(evt.currentTarget).val();
@@ -37,6 +39,10 @@ version 0.2.0-dev.
             return command.val('');
         };
 
+        var replaceShell = function(text) {
+            return command.val(text);
+        };
+
         var writeConsole = function(text) {
             return screen.append('\n' + text);
         };
@@ -44,6 +50,27 @@ version 0.2.0-dev.
         var goBottom = function() {
             var scrollTop = screen[0].scrollHeight;  
             screen.scrollTop(scrollTop);
+        };
+
+        var logHistory = function(cmd) {
+            if(cmd === '') return;
+            bash_history.push(cmd);
+            bash_cursor = bash_history.length;
+        };
+
+        var prevHistory = function() {
+            if(bash_cursor > 0) bash_cursor--;
+            return bash_history[bash_cursor];
+        };
+
+        var nextHistory = function() {
+            if(bash_cursor < bash_history.length - 1) {
+                bash_cursor++;
+                return bash_history[bash_cursor];
+            }
+
+            bash_cursor = bash_history.length;
+            return '';
         };
 
         var handler = {
@@ -62,12 +89,13 @@ version 0.2.0-dev.
             }
         };
 
-        command.keypress(function(evt) {
+        command.keyup(function(evt) {
             if(evt.which == 13) {
                 var cmd = args(evt);
                 evt.preventDefault();
 
                 writeConsole('> ' + cmd);
+                logHistory(cmd);
 
                 if(handler.hasOwnProperty(cmd)) {
                     handler[cmd].call(this);
@@ -77,6 +105,14 @@ version 0.2.0-dev.
 
                 clearShell();
                 goBottom();
+            }
+
+            if(evt.which == 38) {
+                replaceShell(prevHistory());
+            }
+
+            if(evt.which == 40) {
+                replaceShell(nextHistory());
             }
         });
     </script>
