@@ -1,23 +1,29 @@
 .wrapper {
-    padding: 5px 10px;
-    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Droid Sans Mono', 'Consolas', monospace;
-}
-
-#screen {
-    width: 90%;
-    height: 200px;
+    padding: 0 10px;
     font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Droid Sans Mono', 'Consolas', monospace;
     background-color: #141414;
-    color: #fff;
     border: 15px solid #ccc;
-    padding: 10px 5px 40px;
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
     border-radius: 3px;
 }
 
+#screen {
+    width: 100%;
+    height: 350px;
+    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Droid Sans Mono', 'Consolas', monospace;
+    background-color: #141414;
+    color: #fff;
+    border: 0;
+    padding: 10px 5px 10px;
+}
+
 #screen:focus {
     outline: 0;
+}
+
+#screen::-webkit-scrollbar {
+    display: none;
 }
 
 #command {
@@ -43,7 +49,7 @@
 
 .shell {
     position: relative;
-    bottom: 45px;
-    left: 20px;
+    bottom: 5px;
+    left: 0;
     width: 88%;
 }
