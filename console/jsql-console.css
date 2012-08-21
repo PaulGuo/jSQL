@@ -30,7 +30,7 @@
     width: 85%;
     font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Droid Sans Mono', 'Consolas', monospace;
     background-color: #141414;
-    color: #fff;
+    color: #4de;
     border: 0;
 }
 
@@ -40,7 +40,7 @@
 
 .shell-title {
     font-size: 13px;
-    color: #fff;
+    color: #4de;
 }
 
 .console {
