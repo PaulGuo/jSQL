@@ -327,6 +327,22 @@
             return this._keys(this.findAll());
         },
 
+        first: function(fn) {
+            if(fn) {
+                return this.where(fn).first();
+            }
+
+            return this._listSlice(this._buffer, ':1');
+        },
+
+        last: function(fn) {
+            if(fn) {
+                return this.where(fn).last();
+            }
+
+            return this._listSlice(this._buffer, '-1:');
+        },
+
         /**
         * private methods
         */
