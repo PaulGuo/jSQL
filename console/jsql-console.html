@@ -25,12 +25,52 @@ version 0.2.0-dev.
         var screen = $('#screen');
         var command = $('#command');
 
+        var args = function(evt) {
+            return $(evt.currentTarget).val();
+        };
+
+        var clearConsole = function(evt) {
+            return screen.html('');
+        };
+
+        var clearShell = function(evt) {
+            return $(evt.currentTarget).val('');
+        };
+
+        var writeConsole = function(evt, text) {
+            return screen.append('\n' + text);
+        };
+
+        var goBottom = function() {
+            var scrollTop = screen[0].scrollHeight;  
+            screen.scrollTop(scrollTop);
+        };
+
         command.keypress(function(evt) {
             if(evt.which == 13) {
+                var cmd = args(evt);
                 evt.preventDefault();
-                screen.append('\nHi');
-                var scrollTop = screen[0].scrollHeight;  
-                screen.scrollTop(scrollTop);                
+
+                writeConsole(evt, '> ' + cmd);
+
+                if(cmd === 'clear') {
+                    clearConsole();
+                }
+
+                if(cmd === 'help') {
+                    writeConsole(evt, '');
+                    writeConsole(evt, 'jSQL version 0.2.0-dev.');
+                    writeConsole(evt, 'Help Documentation.');
+                    writeConsole(evt, '-----------------------');
+                    writeConsole(evt, '`create`: create new database.');
+                    writeConsole(evt, '`use`: use exist database.');
+                    writeConsole(evt, '`drop`: drop exist database.');
+                    writeConsole(evt, '`select`: select from current database.');
+                    writeConsole(evt, '');
+                }
+
+                clearShell(evt);
+                goBottom();            
             }
         });
     </script>
