@@ -29,15 +29,15 @@ version 0.2.0-dev.
             return $(evt.currentTarget).val();
         };
 
-        var clearConsole = function(evt) {
+        var clearConsole = function() {
             return screen.html('');
         };
 
-        var clearShell = function(evt) {
-            return $(evt.currentTarget).val('');
+        var clearShell = function() {
+            return command.val('');
         };
 
-        var writeConsole = function(evt, text) {
+        var writeConsole = function(text) {
             return screen.append('\n' + text);
         };
 
