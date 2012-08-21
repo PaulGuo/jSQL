@@ -21,5 +21,19 @@ version 0.2.0-dev.
         </div>
     </div>
 
+    <script type="text/javascript">
+        var screen = $('#screen');
+        var command = $('#command');
+
+        command.keypress(function(evt) {
+            if(evt.which == 13) {
+                evt.preventDefault();
+                screen.append('\nHi');
+                var scrollTop = screen[0].scrollHeight;  
+                screen.scrollTop(scrollTop);                
+            }
+        });
+    </script>
+
 </body>
 </html>
