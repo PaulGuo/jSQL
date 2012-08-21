@@ -398,7 +398,7 @@
             var object = {};
             
             for(var i = 0; i < array.length; i++) {
-                object[array[i][key || jSQL_KEY_NAME]] = array[i];
+                object[array[i][key || jSQL_KEY_NAME]] = this._clone(array[i]);
                 delete object[array[i][key || jSQL_KEY_NAME]][key || jSQL_KEY_NAME];
             };
             
