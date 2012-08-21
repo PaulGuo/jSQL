@@ -28,7 +28,8 @@
         nativeKeys         = Object.keys,
         nativeBind         = Function.prototype.bind;
 
-    var _jSQL, jSQL, _DB = {};
+    var jSQL, _jSQL, _DB = {};
+    var jSQL_KEY_NAME = 'jSQL_Key';
     
     if(typeof(this.jSQL) !== 'undefined') {
         _jSQL = this.jSQL;
@@ -381,7 +382,7 @@
             
             for(var i in object) {
                 if(object.hasOwnProperty(i)) {
-                    object[i].jSQL_Key = i;
+                    object[i][jSQL_KEY_NAME] = i;
                     array.push(object[i]);
                 }
             }
@@ -393,8 +394,8 @@
             var object = {};
             
             for(var i = 0; i < array.length; i++) {
-                object[array[i][key || 'jSQL_Key']] = array[i];
-                delete object[array[i][key || 'jSQL_Key']][key || 'jSQL_Key'];
+                object[array[i][key || jSQL_KEY_NAME]] = array[i];
+                delete object[array[i][key || jSQL_KEY_NAME]][key || jSQL_KEY_NAME];
             };
             
             return object;
