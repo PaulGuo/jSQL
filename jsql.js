@@ -85,7 +85,7 @@
 
             this._currentDB = this._DB[dbname];
             this._currentDBName = dbname;
-            this.select('*');
+            this.rebase();
             return this;
         },
 
@@ -140,7 +140,10 @@
         */
 
         count: function() {
-            return this._buffer.length;
+            var result;
+            result = this._buffer.length;
+            this.rebase();
+            return result;
         },
         
         /**
@@ -255,7 +258,10 @@
         */
 
         findAll: function() {
-            return this._clone(this._arrayToObject(this._buffer));
+            var result;
+            result = this._clone(this._arrayToObject(this._buffer));
+            this.rebase();
+            return result;
         },
 
         /**
@@ -265,6 +271,8 @@
         */
 
         find: function(key) {
+            var result;
+
             if(!key) {
                 for(var i in this._buffer) {
                     if(key) {
@@ -277,7 +285,9 @@
                 }
             }
             
-            return this._clone(this._buffer[key]);
+            result = this._clone(this._buffer[key]);
+            this.rebase();
+            return result;
         },
         
         /**
@@ -286,7 +296,10 @@
         */
 
         listAll: function() {
-            return this._clone(this._buffer);
+            var result;
+            result = this._clone(this._buffer);
+            this.rebase();
+            return result;
         },
         
         /**
@@ -343,6 +356,11 @@
             }
 
             return this._listSlice(this._buffer, '-1:');
+        },
+
+        rebase: function() {
+            this.select('*');
+            return this;
         },
 
         /**
