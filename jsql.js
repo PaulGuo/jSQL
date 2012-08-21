@@ -97,6 +97,10 @@
             }
         },
 
+        dbs: function() {
+            return this._keys(this._DB);
+        },
+
         /**
         * select object from currentDB
         * @param key
