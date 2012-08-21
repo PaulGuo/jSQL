@@ -85,6 +85,7 @@
 
             this._currentDB = this._DB[dbname];
             this._currentDBName = dbname;
+            this.select('*');
             return this;
         },
 
@@ -123,7 +124,7 @@
             
             this._buffer = this._currentDB; //reset the _buffer
             
-            if(key==='*') {
+            if(key === '*') {
                 return this;
             }
             
