@@ -1,0 +1,49 @@
+.wrapper {
+    padding: 5px 10px;
+    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Droid Sans Mono', 'Consolas', monospace;
+}
+
+#screen {
+    width: 90%;
+    height: 200px;
+    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Droid Sans Mono', 'Consolas', monospace;
+    background-color: #141414;
+    color: #fff;
+    border: 15px solid #ccc;
+    padding: 10px 5px 40px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+}
+
+#screen:focus {
+    outline: 0;
+}
+
+#command {
+    width: 85%;
+    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Droid Sans Mono', 'Consolas', monospace;
+    background-color: #141414;
+    color: #fff;
+    border: 0;
+}
+
+#command:focus {
+    outline: 0;
+}
+
+.shell-title {
+    font-size: 13px;
+    color: #fff;
+}
+
+.console {
+    position: relative;
+}
+
+.shell {
+    position: relative;
+    bottom: 45px;
+    left: 20px;
+    width: 90%;
+}
