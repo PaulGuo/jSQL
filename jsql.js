@@ -342,17 +342,18 @@
             return obj === Object(obj);
         },
 
-        _clone: function (obj) {
-            if(obj == null || typeof(obj) != 'object') {
-                return obj;
+        _clone: function(obj) {
+            var _tmp = {};
+            
+            if (!this._isObject(obj)) return obj;
+            if(this._isArray(obj)) return obj.slice();
+            
+            for(var i in obj) {
+                if(obj.hasOwnProperty(i)) {
+                    _tmp[i] = obj[i];
+                }
             }
-
-            var temp = new obj.constructor();
-            for(var key in obj) {
-                temp[key] = arguments.callee(obj[key]);
-            }
-
-            return temp;
+            return _tmp;
         },
 
         _objectToArray: function(object) {
