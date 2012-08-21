@@ -40,6 +40,8 @@
     };
     
     jSQL.prototype = {
+        version: '0.2.0-dev',
+
         init: function() {
             this._jSQL = _jSQL;
             this._DB = _DB;
