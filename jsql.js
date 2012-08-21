@@ -441,7 +441,7 @@
         _appendKey: function(list, indexList) {
             var that = this;
             that._each(list, function(o, i, r) {
-                o['jSQL_Key'] = that._keygen(o, indexList);
+                o[jSQL_KEY_NAME] = that._keygen(o, indexList);
             });
         },
 
