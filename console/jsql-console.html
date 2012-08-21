@@ -30,7 +30,7 @@ version 0.2.0-dev.
         };
 
         var clearConsole = function() {
-            return screen.html('');
+            return screen.html('>');
         };
 
         var clearShell = function() {
@@ -46,6 +46,22 @@ version 0.2.0-dev.
             screen.scrollTop(scrollTop);
         };
 
+        var handler = {
+            '': function() {},
+            'clear': clearConsole,
+            'help': function() {
+                writeConsole('');
+                writeConsole('jSQL version 0.2.0-dev.');
+                writeConsole('Help Documentation.');
+                writeConsole('-----------------------');
+                writeConsole('`create`: create new database.');
+                writeConsole('`use`: use exist database.');
+                writeConsole('`drop`: drop exist database.');
+                writeConsole('`select`: select from current database.');
+                writeConsole('');
+            }
+        };
+
         command.keypress(function(evt) {
             if(evt.which == 13) {
                 var cmd = args(evt);
@@ -53,24 +69,14 @@ version 0.2.0-dev.
 
                 writeConsole('> ' + cmd);
 
-                if(cmd === 'clear') {
-                    clearConsole();
-                }
-
-                if(cmd === 'help') {
-                    writeConsole('');
-                    writeConsole('jSQL version 0.2.0-dev.');
-                    writeConsole('Help Documentation.');
-                    writeConsole('-----------------------');
-                    writeConsole('`create`: create new database.');
-                    writeConsole('`use`: use exist database.');
-                    writeConsole('`drop`: drop exist database.');
-                    writeConsole('`select`: select from current database.');
-                    writeConsole('');
+                if(handler.hasOwnProperty(cmd)) {
+                    handler[cmd].call(this);
+                } else {
+                    writeConsole('command not found');
                 }
 
                 clearShell();
-                goBottom();            
+                goBottom();
             }
         });
     </script>
