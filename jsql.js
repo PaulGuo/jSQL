@@ -314,6 +314,10 @@
             return this;
         },
 
+        keys: function() {
+            return this._keys(this.findAll());
+        },
+
         /**
         * private methods
         */
@@ -414,7 +418,48 @@
             that._each(list, function(o, i, r) {
                 o['jSQL_Key'] = that._keygen(o, indexList);
             });
-        }
+        },
+
+        _keys: nativeKeys || (function() {
+            var hasDontEnumBug = true,
+                dontEnums = [
+                    'toString',
+                    'toLocaleString',
+                    'valueOf',
+                    'hasOwnProperty',
+                    'isPrototypeOf',
+                    'propertyIsEnumerable',
+                    'constructor'
+                ],
+                dontEnumsLength = dontEnums.length;
+
+            for (var key in {'toString': null}) {
+                hasDontEnumBug = false;
+            }
+
+            return function keys(object) {
+                if ((typeof object != 'object' && typeof object != 'function') || object === null) {
+                    throw new TypeError('Object.keys called on a non-object');
+                }
+
+                var keys = [];
+                for (var name in object) {
+                    if (object.hasOwnProperty(name)) {
+                        keys.push(name);
+                    }
+                }
+
+                if (hasDontEnumBug) {
+                    for (var i = 0, ii = dontEnumsLength; i < ii; i++) {
+                        var dontEnum = dontEnums[i];
+                        if (object.hasOwnProperty(dontEnum)) {
+                            keys.push(dontEnum);
+                        }
+                    }
+                }
+                return keys;
+            };
+        })()
     };
 
     jSQL = new jSQL();
