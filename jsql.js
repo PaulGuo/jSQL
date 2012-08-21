@@ -514,5 +514,5 @@
 
     jSQL = new jSQL();
     
-    typeof(module) !== 'undefined' && module.exports ? module.exports = jSQL : this.jSQL = jSQL;
+    typeof(module) !== 'undefined' && module.exports ? module.exports = jSQL : this.jsql = this.jSQL = jSQL;
 })();
