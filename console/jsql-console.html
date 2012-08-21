@@ -51,25 +51,25 @@ version 0.2.0-dev.
                 var cmd = args(evt);
                 evt.preventDefault();
 
-                writeConsole(evt, '> ' + cmd);
+                writeConsole('> ' + cmd);
 
                 if(cmd === 'clear') {
                     clearConsole();
                 }
 
                 if(cmd === 'help') {
-                    writeConsole(evt, '');
-                    writeConsole(evt, 'jSQL version 0.2.0-dev.');
-                    writeConsole(evt, 'Help Documentation.');
-                    writeConsole(evt, '-----------------------');
-                    writeConsole(evt, '`create`: create new database.');
-                    writeConsole(evt, '`use`: use exist database.');
-                    writeConsole(evt, '`drop`: drop exist database.');
-                    writeConsole(evt, '`select`: select from current database.');
-                    writeConsole(evt, '');
+                    writeConsole('');
+                    writeConsole('jSQL version 0.2.0-dev.');
+                    writeConsole('Help Documentation.');
+                    writeConsole('-----------------------');
+                    writeConsole('`create`: create new database.');
+                    writeConsole('`use`: use exist database.');
+                    writeConsole('`drop`: drop exist database.');
+                    writeConsole('`select`: select from current database.');
+                    writeConsole('');
                 }
 
-                clearShell(evt);
+                clearShell();
                 goBottom();            
             }
         });
