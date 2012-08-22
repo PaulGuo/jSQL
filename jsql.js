@@ -230,7 +230,7 @@
                     }
                     
                     if(_swap) {
-                        _tmp[i] = this._buffer[i];
+                        _tmp.push(this._clone(this._buffer[i]));
                     }
                 }
             }
