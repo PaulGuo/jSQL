@@ -29,7 +29,7 @@ var print_r = function(data, view) {
 				else
 					this.output.push({
 						'string':   '"' + data + '"',
-						'function': data.toString().replace(/\b.*\n|\}$/g, '\t$&').replace(/^\t/, ' ')
+						'function': data && data.toString().replace(/\b.*\n|\}$/g, '\t$&').replace(/^\t/, ' ')
 					}[this.type(data)] || data);
 
 				return this.output.join('');
@@ -41,6 +41,7 @@ var print_r = function(data, view) {
 			 - string type (object type)
 			 */
 			type: function(type) {
+				if(typeof(type) === 'undefined') return 'string';
 				return Object.prototype.toString.call(type).replace(/object|[\[\]\s]/g, '').toLowerCase();
 			},
 

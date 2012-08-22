@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="jsql-console.css" />
     <script type="text/javascript" src="jquery-1.8.0.min.js"></script>
     <script type="text/javascript" src="jsql-sample-data.js"></script>
+    <script type="text/javascript" src="print_r.js"></script>
     <script type="text/javascript" src="../jsql.js"></script>
 </head>
 <body>
@@ -164,7 +165,8 @@ type `help` for more informations.
                     try {
                         var result = eval(cmd);
                         if(jsql._isPlainObject(result) || jsql._isArray(result)) {
-                            result = dump(result);
+                            //result = dump(result);
+                            result = print_r(result);
                         }
                         writeConsole(result);
                     } catch(e) {
