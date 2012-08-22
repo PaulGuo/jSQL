@@ -161,6 +161,9 @@ type `help` for more informations.
                 if(handler.hasOwnProperty(cmd)) {
                     handler[cmd].call(this);
                 } else {
+                    if(!cmd.match(/^(jsql|jSQL).*$/)) {
+                        cmd = 'jSQL.' + cmd;
+                    }
                     //writeConsole('command not found');
                     try {
                         var result = eval(cmd);
