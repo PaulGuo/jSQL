@@ -135,7 +135,12 @@ type `help` for more informations.
                 if(handler.hasOwnProperty(cmd)) {
                     handler[cmd].call(this);
                 } else {
-                    writeConsole('command not found');
+                    //writeConsole('command not found');
+                    try {
+                        writeConsole(eval(cmd));
+                    } catch(e) {
+                        writeConsole('Error: ' + e.type);
+                    }
                 }
 
                 clearShell();
