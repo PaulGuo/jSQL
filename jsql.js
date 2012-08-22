@@ -210,6 +210,7 @@
         where: function(fn) {
             var _tmp = [], _swap;
             this._buffer = this._buffer || this._currentDB;
+            fn = this._parseFn(fn);
             
             for(var i in this._buffer) {
                 if(this._buffer.hasOwnProperty(i)) {
@@ -509,7 +510,15 @@
                 }
                 return keys;
             };
-        })()
+        })(),
+
+        _parseFn: function(fn) {
+            if(typeof(fn) === 'string') {
+                fn = new Function('data', 'with(data) { return ' + fn + '; }');
+            }
+
+            return fn;
+        }
     };
 
     jSQL = new jSQL();
