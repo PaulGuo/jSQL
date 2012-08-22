@@ -28,7 +28,7 @@
         nativeKeys         = Object.keys,
         nativeBind         = Function.prototype.bind;
 
-    var jSQL, _jSQL, _DB = {};
+    var jSQL, _jSQL, _DB = {}, _DBIndexMap = {};
     var jSQL_KEY_NAME = 'jSQL_Key';
     
     if(typeof(this.jSQL) !== 'undefined') {
@@ -47,6 +47,7 @@
             this._DB = _DB;
             this._currentDB = null;
             this._buffer = null;
+            this._DBIndexMap = _DBIndexMap;
         },
 
         /**
@@ -65,9 +66,11 @@
             if(this._isArray(db)) {
                 indexList = this._listSlice(arguments, '2:');
                 this._appendKey(db, indexList);
+                _DBIndexMap[dbname] = this._arrayToObject(db);
             }
 
             if(this._isPlainObject(db)) {
+                _DBIndexMap[dbname] = this._clone(db);
                 db = this._objectToArray(db);
             }
             
@@ -275,20 +278,23 @@
 
         find: function(key) {
             var result;
+            var _tmp = this._DBIndexMap[this._currentDBName];
 
             if(!key) {
-                for(var i in this._buffer) {
-                    if(key) {
-                        break;
-                    }
-                    
-                    if(this._buffer.hasOwnProperty(i)) {
-                        key = i;
+                for(var i in _tmp) {
+                    if(_tmp.hasOwnProperty(i)) {
+                        if(key) {
+                            break;
+                        }
+                        
+                        if(this._buffer.hasOwnProperty(i)) {
+                            key = i;
+                        }
                     }
                 }
             }
             
-            result = this._clone(this._buffer[key]);
+            result = this._clone(_tmp[key]);
             this.rebase();
             return result;
         },
