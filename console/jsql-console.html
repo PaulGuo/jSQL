@@ -147,7 +147,7 @@ type `help` for more informations.
             return dumped_text;
         };
 
-        jsql.create('users', data.users);
+        jsql.create('users', data.users).use('users');
 
         command.keyup(function(evt) {
             if(evt.which == 13) {
