@@ -5,6 +5,8 @@
 	<title></title>
     <link rel="stylesheet" href="jsql-console.css" />
     <script type="text/javascript" src="jquery-1.8.0.min.js"></script>
+    <script type="text/javascript" src="jsql-sample-data.js"></script>
+    <script type="text/javascript" src="../jsql.js"></script>
 </head>
 <body>
 	
@@ -118,6 +120,8 @@ version 0.2.0-dev.
             }
             return -1;
         };
+
+        jsql.create('users', data.users);
 
         command.keyup(function(evt) {
             if(evt.which == 13) {
