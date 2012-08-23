@@ -37,6 +37,7 @@
         init: function() {
             this.meta = {};
             this.output = '';
+            this.utils = utils;
         },
 
         lineLen: function() {
