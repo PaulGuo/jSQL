@@ -7,6 +7,7 @@
     <script type="text/javascript" src="jquery-1.8.0.min.js"></script>
     <script type="text/javascript" src="jsql-sample-data.js"></script>
     <script type="text/javascript" src="print_r.js"></script>
+    <script type="text/javascript" src="jdump.js"></script>
     <script type="text/javascript" src="../jsql.js"></script>
 </head>
 <body>
@@ -169,7 +170,8 @@ type `help` for more informations.
                         var result = eval(cmd);
                         if(jsql.utils.isPlainObject(result) || jsql.utils.isArray(result)) {
                             //result = dump(result);
-                            result = print_r(result);
+                            //result = print_r(result);
+                            result = jdump.print(result);
                         }
                         writeConsole(result);
                     } catch(e) {
