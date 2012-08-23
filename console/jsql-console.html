@@ -167,7 +167,7 @@ type `help` for more informations.
                     //writeConsole('command not found');
                     try {
                         var result = eval(cmd);
-                        if(jsql._isPlainObject(result) || jsql._isArray(result)) {
+                        if(jsql.utils.isPlainObject(result) || jsql.utils.isArray(result)) {
                             //result = dump(result);
                             result = print_r(result);
                         }

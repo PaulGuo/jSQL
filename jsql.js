@@ -30,13 +30,14 @@
 
     var jSQL, _jSQL, _DB = {}, _DBIndexMap = {};
     var jSQL_KEY_NAME = 'jSQL_Key';
+    var utils = {};
     
     if(typeof(this.jSQL) !== 'undefined') {
         _jSQL = this.jSQL;
     }
     
     jSQL = function() {
-        this.init.apply(this,arguments);
+        this.init.apply(this, arguments);
     };
     
     jSQL.prototype = {
@@ -48,6 +49,7 @@
             this._currentDB = null;
             this._buffer = null;
             this._DBIndexMap = _DBIndexMap;
+            this.utils = utils;
         },
 
         /**
@@ -63,15 +65,15 @@
                 throw('DB Already Exist.');
             }
 
-            if(this._isArray(db)) {
-                indexList = this._listSlice(arguments, '2:');
-                this._appendKey(db, indexList);
-                _DBIndexMap[dbname] = this._arrayToObject(db);
+            if(utils.isArray(db)) {
+                indexList = utils.listSlice(arguments, '2:');
+                utils.appendKey(db, indexList);
+                _DBIndexMap[dbname] = utils.arrayToObject(db);
             }
 
-            if(this._isPlainObject(db)) {
-                _DBIndexMap[dbname] = this._clone(db);
-                db = this._objectToArray(db);
+            if(utils.isPlainObject(db)) {
+                _DBIndexMap[dbname] = utils.clone(db);
+                db = utils.objectToArray(db);
             }
             
             this._DB[dbname] = db;
@@ -106,7 +108,7 @@
         },
 
         dbs: function() {
-            return this._keys(this._DB);
+            return utils.keys(this._DB);
         },
 
         db: function() {
@@ -134,7 +136,7 @@
             }
             
             this.where(function(data) {
-                return typeof(this._deep(data, key)) !== 'undefined';
+                return typeof(utils.deep(data, key)) !== 'undefined';
             });
             
             return this;
@@ -170,7 +172,7 @@
                         this._currentDB[_key] : 
                         typeof(scope) === 'function' ? 
                             scope.call(this, this._currentDB[_key], _key) === true ? true : undefined : 
-                            this._deep(this._currentDB[_key], scope);
+                            utils.deep(this._currentDB[_key], scope);
                     
                     if(typeof(_tmp) !== 'undefined') {
                         rs++;
@@ -197,8 +199,8 @@
             }
             
             _array.sort(function(a, b) {
-                a = _this._deep(a, field);
-                b = _this._deep(b, field);
+                a = utils.deep(a, field);
+                b = utils.deep(b, field);
                 if(callback) {
                     a = callback(a);
                     b = callback(b);
@@ -213,7 +215,7 @@
         where: function(fn) {
             var _tmp = [], _swap;
             this._buffer = this._buffer || this._currentDB;
-            fn = this._parseFn(fn);
+            fn = utils.parseFn(fn);
             
             for(var i in this._buffer) {
                 if(this._buffer.hasOwnProperty(i)) {
@@ -221,7 +223,7 @@
                         _swap = fn.call(this, this._buffer[i], i);
                     }
 
-                    if(this._isArray(fn)) {
+                    if(utils.isArray(fn)) {
                         _swap = false;
 
                         for(var f in fn) {
@@ -234,7 +236,7 @@
                     }
                     
                     if(_swap) {
-                        _tmp.push(this._clone(this._buffer[i]));
+                        _tmp.push(utils.clone(this._buffer[i]));
                     }
                 }
             }
@@ -265,7 +267,7 @@
 
         findAll: function() {
             var result;
-            result = this._clone(this._arrayToObject(this._buffer));
+            result = utils.clone(utils.arrayToObject(this._buffer));
             this.rebase();
             return result;
         },
@@ -294,7 +296,7 @@
                 }
             }
             
-            result = this._clone(_tmp[key]);
+            result = utils.clone(_tmp[key]);
             this.rebase();
             return result;
         },
@@ -306,7 +308,7 @@
 
         listAll: function() {
             var result;
-            result = this._clone(this._buffer);
+            result = utils.clone(this._buffer);
             this.rebase();
             return result;
         },
@@ -343,12 +345,12 @@
 
             limit = start + ':' + (start + end);
             
-            this._buffer = this._listSlice(_tmp, limit);
+            this._buffer = utils.listSlice(_tmp, limit);
             return this;
         },
 
         keys: function() {
-            return this._keys(this.findAll());
+            return utils.keys(this.findAll());
         },
 
         first: function(fn) {
@@ -356,7 +358,7 @@
                 return this.where(fn).first();
             }
 
-            return this._listSlice(this._buffer, ':1');
+            return utils.listSlice(this._buffer, ':1');
         },
 
         last: function(fn) {
@@ -364,19 +366,21 @@
                 return this.where(fn).last();
             }
 
-            return this._listSlice(this._buffer, '-1:');
+            return utils.listSlice(this._buffer, '-1:');
         },
 
         rebase: function() {
             this.select('*');
             return this;
-        },
+        }
+    };
 
-        /**
-        * private methods
-        */
-        
-        _deep: function(data, scope) {
+    /**
+    * private methods
+    */
+
+    utils = {
+        deep: function(data, scope) {
             var _tmp = data, scope = scope.split('.');
             for(var i = 0; i < scope.length; i++) {
                 _tmp = _tmp[scope[i]];
@@ -384,19 +388,19 @@
             return _tmp;
         },
 
-        _isArray: nativeIsArray || function(obj) {
+        isArray: nativeIsArray || function(obj) {
             return toString.call(obj) === '[object Array]';
         },
 
-        _isObject: function(obj) {
+        isObject: function(obj) {
             return obj === Object(obj);
         },
 
-        _isPlainObject: function(obj) {
-            return this._isObject(obj) && obj.constructor === Object;
+        isPlainObject: function(obj) {
+            return this.isObject(obj) && obj.constructor === Object;
         },
 
-        _clone: function (obj) {
+        clone: function (obj) {
             if(obj == null || typeof(obj) != 'object') {
                 return obj;
             }
@@ -409,8 +413,8 @@
             return temp;
         },
 
-        _objectToArray: function(object) {
-            var array = [], object = this._clone(object);
+        objectToArray: function(object) {
+            var array = [], object = this.clone(object);
             
             for(var i in object) {
                 if(object.hasOwnProperty(i)) {
@@ -422,18 +426,18 @@
             return array;
         },
 
-        _arrayToObject: function(array, key) {
+        arrayToObject: function(array, key) {
             var object = {};
             
             for(var i = 0; i < array.length; i++) {
-                object[array[i][key || jSQL_KEY_NAME]] = this._clone(array[i]);
+                object[array[i][key || jSQL_KEY_NAME]] = this.clone(array[i]);
                 delete object[array[i][key || jSQL_KEY_NAME]][key || jSQL_KEY_NAME];
             };
             
             return object;
         },
 
-        _each: function(list, fn) {
+        each: function(list, fn) {
             if(nativeForEach) {
                 list.forEach(fn);
                 return;
@@ -444,23 +448,23 @@
             }
         },
 
-        _keygen: function(object, indexList) {
+        keygen: function(object, indexList) {
             var that = this;
             var baseRef = [].slice.call(arguments, 1);
             var key = '';
 
-            if(that._isArray(indexList)) {
+            if(that.isArray(indexList)) {
                 baseRef = indexList;
             }
 
-            that._each(baseRef, function(o, i, r) {
-                key += that._deep(object, o);
+            that.each(baseRef, function(o, i, r) {
+                key += utils.deep(object, o);
             });
 
             return key;
         },
 
-        _listSlice: function(list, range) {
+        listSlice: function(list, range) {
             var start, end;
 
             list = [].slice.call(list);
@@ -470,14 +474,14 @@
             return [].slice.call(list, start, end);
         },
 
-        _appendKey: function(list, indexList) {
+        appendKey: function(list, indexList) {
             var that = this;
-            that._each(list, function(o, i, r) {
-                o[jSQL_KEY_NAME] = that._keygen(o, indexList) || i;
+            that.each(list, function(o, i, r) {
+                o[jSQL_KEY_NAME] = that.keygen(o, indexList) || i;
             });
         },
 
-        _keys: nativeKeys || (function() {
+        keys: nativeKeys || (function() {
             var hasDontEnumBug = true,
                 dontEnums = [
                     'toString',
@@ -518,7 +522,7 @@
             };
         })(),
 
-        _parseFn: function(fn) {
+        parseFn: function(fn) {
             if(typeof(fn) === 'string') {
                 fn = new Function('data', 'with(data) { return ' + fn + '; }');
             }
