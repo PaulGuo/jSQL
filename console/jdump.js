@@ -86,8 +86,9 @@
                     });
                     that.echo('|\n');
                     titleStr = true;
+                    that.echo(lineStr + '\n');
                 }
-                that.echo(lineStr + '\n');
+                //that.echo(lineStr + '\n');
                 utils.each(o, function(o, i, r) {
                     tmpStr = '| ' + utils.fill(o, that.meta[i]) + ' ';
                     that.echo(tmpStr);
