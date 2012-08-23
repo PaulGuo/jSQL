@@ -165,13 +165,10 @@ type `help` for more informations.
                     if(!cmd.match(/^(jsql|jSQL).*$/)) {
                         cmd = 'jSQL.' + cmd;
                     }
-                    //writeConsole('command not found');
                     try {
                         var result = eval(cmd);
                         if(jsql.utils.isPlainObject(result) || jsql.utils.isArray(result)) {
-                            //result = dump(result);
-                            //result = print_r(result);
-                            result = jdump.print(result);
+                            result = cmd.match(/^(jsql|jSQL)\..*$/) ? jdump.print(result) : print_r(result);
                         }
                         writeConsole(result);
                     } catch(e) {
