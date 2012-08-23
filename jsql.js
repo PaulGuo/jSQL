@@ -167,7 +167,7 @@
             for(var i in this._buffer) {
                 if(this._buffer.hasOwnProperty(i)) {
                     if(typeof(fn) === 'function') {
-                        _swap = fn.call(this, this._buffer[i], i);
+                        _swap = fn.call(this, utils.clone(this._buffer[i]), i);
                     }
 
                     if(utils.isArray(fn)) {
@@ -175,7 +175,7 @@
 
                         for(var f in fn) {
                             if(fn.hasOwnProperty(f)) {
-                                if(fn[f].call(this, this._buffer[i], i)) {
+                                if(fn[f].call(this, utils.clone(this._buffer[i]), i)) {
                                     _swap = true;
                                 }
                             }
