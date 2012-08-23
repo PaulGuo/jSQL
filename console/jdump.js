@@ -75,8 +75,6 @@
             that.genMeta(data);
             lineLen = that.lineLen();
             lineStr = utils.fill('', lineLen, '-');
-            console.log(that.meta);
-            console.log(lineLen);
 
             utils.each(data, function(o, i, r) {
                 if(!titleStr) {
@@ -89,7 +87,6 @@
                     titleStr = true;
                     that.echo(lineStr + '\n');
                 }
-                //that.echo(lineStr + '\n');
                 utils.each(o, function(o, i, r) {
                     tmpStr = '| ' + utils.fill(o, that.meta[i]) + ' ';
                     that.echo(tmpStr);
@@ -126,6 +123,10 @@
                         fn(list[i], i, list);
                     }
                 }
+                return;
+            }
+
+            if(!this.isArray(list)) {
                 return;
             }
 
