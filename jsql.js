@@ -52,12 +52,6 @@
             this.utils = utils;
         },
 
-        /**
-        * create a new database
-        * @param dbname [String]
-        * @param db [Object]
-        */
-
         create: function(dbname, db) {
             var indexList;
 
@@ -80,11 +74,6 @@
             return this;
         },
 
-        /**
-        * select an exist database as current
-        * @param dbname [String]
-        */
-
         use: function(dbname) {
             if(!this._DB.hasOwnProperty(dbname)) {
                 throw('Database Not Exist.');
@@ -95,11 +84,6 @@
             this.rebase();
             return this;
         },
-
-        /**
-        * drop an exist database
-        * @param dbname [String]
-        */
 
         drop: function(dbname) {
             if(this._DB.hasOwnProperty(dbname)) {
@@ -114,15 +98,6 @@
         db: function() {
             return this._currentDBName;
         },
-
-        /**
-        * select object from currentDB
-        * @param key
-            '*':     return all
-            'a':     return base value which key is 'a'
-            'a.b.c': return deep value a->b->c
-        *
-        */
 
         select: function(key) {
             if(!this._currentDB) {
@@ -142,26 +117,12 @@
             return this;
         },
 
-        /**
-        * get the count of current result set
-        */
-
         count: function() {
             var result;
             result = this._buffer.length;
             this.rebase();
             return result;
         },
-        
-        /**
-        * calculate the total of spec key
-        * @param key
-            '*':     return first package key count
-            'a':     return base value which key is 'a'
-            'a.b.c': return deep value a->b->c
-        *
-        * @use [jSQL instance].total('a.b.c')
-        */
         
         total: function(scope) {
             var rs = 0, _tmp;
@@ -182,13 +143,6 @@
             
             return rs;
         },
-
-        /**
-        * sort the current result set
-        * @param field [String]
-        * @param callback [function]
-        * @param order [String <asc | desc>]
-        */
 
         orderby: function(field, callback, order) {
             var _array = this._buffer;
@@ -260,23 +214,12 @@
             return this;
         },
 
-        /**
-        * return the current result set
-        * @return [Object]
-        */
-
         findAll: function() {
             var result;
             result = utils.clone(utils.arrayToObject(this._buffer));
             this.rebase();
             return result;
         },
-
-        /**
-        * return a specified item of current result set
-        * if the key doesn't given, it'll return the first item
-        * @return [Object]
-        */
 
         find: function(key) {
             var result;
@@ -300,11 +243,6 @@
             this.rebase();
             return result;
         },
-        
-        /**
-        * return the current result set as array list
-        * @return [Object]
-        */
 
         listAll: function() {
             var result;
@@ -312,12 +250,6 @@
             this.rebase();
             return result;
         },
-        
-        /**
-        * update the current result set
-        * @param key [String]
-        * @param data [Object]
-        */
         
         update: function(key, data) {
             if(!this._currentDB) {
@@ -328,12 +260,6 @@
                 this._currentDB[key] = data;
             }
         },
-        
-        /**
-        * limit the current result set
-        * @param start [Number]
-        * @param end [Number]
-        */
         
         limit: function(start, end) {
             var _tmp = this._buffer;
@@ -374,10 +300,6 @@
             return this;
         }
     };
-
-    /**
-    * private methods
-    */
 
     utils = {
         deep: function(data, scope) {
