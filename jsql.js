@@ -248,6 +248,10 @@
                 this._currentDB[key] = data;
             }
         },
+
+        insert: function() {
+            //TODO
+        },
         
         limit: function(start, end) {
             var _tmp = this._buffer;
