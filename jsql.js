@@ -16,12 +16,16 @@
         nativeIsArray      = Array.isArray,
         nativeKeys         = Object.keys;
 
-    var jSQL, _jSQL, _DB = {}, _DBIndexMap = {};
+    var jSQL, _jSQL, _jsql, _DB = {}, _DBIndexMap = {};
     var jSQL_KEY_NAME = 'jSQL_Key';
     var utils = {};
     
     if(typeof(this.jSQL) !== 'undefined') {
         _jSQL = this.jSQL;
+    }
+
+    if(typeof(this.jsql) !== 'undefined') {
+        _jsql = this.jsql;
     }
     
     jSQL = function() {
@@ -33,6 +37,7 @@
 
         init: function() {
             this._jSQL = _jSQL;
+            this._jsql = _jsql;
             this._DB = _DB;
             this._currentDB = null;
             this._buffer = null;
@@ -289,6 +294,18 @@
 
         rebase: function() {
             this.select('*');
+            return this;
+        },
+
+        noConflict: function() {
+            if(window.jSQL === jSQL) {
+                window.jSQL = this._jSQL;
+            }
+
+            if(window.jsql === jsql) {
+                window.jsql = this._jsql;
+            }
+
             return this;
         }
     };
