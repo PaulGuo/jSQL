@@ -10,6 +10,7 @@
 
 (function() {
     var slice               = Array.prototype.slice,
+        toString            = Object.prototype.toString,
         hasOwnProperty      = Object.prototype.hasOwnProperty;
 
     var nativeForEach       = Array.prototype.forEach,
