@@ -71,6 +71,7 @@
             var tmpStr;
             var titleStr;
 
+            data = utils.listLike(data) ? data : [data];
             that.init();
             that.genMeta(data);
             lineLen = that.lineLen();
@@ -154,6 +155,19 @@
                 str = arguments.callee.call(this, str, len, char);
             }
             return str;
+        },
+
+        listLike: function(data) {
+            var that = this;
+            var flag = true;
+
+            this.each(data, function(o, i, r) {
+                if(!that.isPlainObject(o)) {
+                    flag = false;
+                }
+            });
+
+            return flag;
         }
     };
 
