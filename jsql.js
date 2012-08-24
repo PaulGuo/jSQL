@@ -16,7 +16,7 @@
         nativeIsArray      = Array.isArray,
         nativeKeys         = Object.keys;
 
-    var jSQL, _jSQL, _jsql, _DB = {}, _DBIndexMap = {};
+    var jSQL, _jSQL, _jsql, _DB = {}, _DBIndexMap = {}, _protected = {};
     var jSQL_KEY_NAME = 'jSQL_Key';
     var utils = {};
     
@@ -42,6 +42,7 @@
             this._currentDB = null;
             this._buffer = null;
             this._DBIndexMap = _DBIndexMap;
+            this._protected = _protected;
             this.utils = utils;
         },
 
@@ -98,6 +99,7 @@
             }
             
             this._buffer = this._currentDB; //reset the _buffer
+            this._protected['field'] = key;
             
             if(key === '*') {
                 return this;
@@ -293,6 +295,7 @@
         },
 
         rebase: function() {
+            this._protected = {};
             this.select('*');
             return this;
         },
@@ -307,6 +310,10 @@
             }
 
             return this;
+        },
+
+        _select: function(data, field) {
+            
         }
     };
 
