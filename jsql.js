@@ -495,7 +495,7 @@
                 }
             }
             return -1;
-        }        
+        }
     };
 
     jSQL = new jSQL();
