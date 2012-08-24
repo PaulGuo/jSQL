@@ -149,6 +149,10 @@ type `help` for more informations.
             return dumped_text;
         };
 
+        var buildTimeConsuming = function(time) {
+            return '\n' + 'QUERY TIME IN: ' + time / 1000 + 's';
+        };
+
         jsql.create('users', data.users, 'first', 'last', 'age').use('users');
 
         command.keyup(function(evt) {
@@ -166,9 +170,15 @@ type `help` for more informations.
                         cmd = 'jSQL.' + cmd;
                     }
                     try {
+                        var start_time = new Date().getTime();
                         var result = eval(cmd);
+                        var end_time = new Date().getTime();
+                        var execute_exhaust = end_time - start_time;
+
+                        console.log('EXECUTE COMMAND: ' + cmd);
+
                         if(jsql.utils.isPlainObject(result) || jsql.utils.isArray(result)) {
-                            result = cmd.match(/^.*(jsql|jSQL)\..*$/) ? jdump.print(result) : print_r(result);
+                            result = cmd.match(/^.*(jsql|jSQL)\..*$/) ? jdump.print(result) + buildTimeConsuming(execute_exhaust) : print_r(result);
                         }
                         writeConsole(result);
                     } catch(e) {
