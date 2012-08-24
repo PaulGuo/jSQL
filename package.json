@@ -1,8 +1,8 @@
 {
 	"name":"jsql",
-	"version":"0.0.1-dev",
+	"version":"0.3.0-dev",
 	"description":"a SQL like database using javascript",
-	"homepage":"http://jsql.injs.org",
+	"homepage":"http://jsql.us",
 	"author":"jSQL.js authors {badkaikai@gmail.com | http://benben.cc}",
 	"keywords":["jSQL","SQL Like","db","database","jsdb","javascript"],
 	"repository":{
