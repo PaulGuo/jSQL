@@ -18,9 +18,9 @@
         nativeIndexOf       = Array.prototype.indexOf,
         nativeLastIndexOf   = Array.prototype.lastIndexOf;
 
-    var jSQL, _jSQL, _jsql, _DB = {}, _DBIndexMap = {}, _protected = {};
-    var jSQL_KEY_NAME = 'jSQL_Key';
     var utils = {};
+    var jSQL_KEY_NAME = 'jSQL_Key';
+    var jSQL, _jSQL, _jsql, _DB = {}, _DBIndexMap = {}, _protected = {};
     
     if(typeof(this.jSQL) !== 'undefined') {
         _jSQL = this.jSQL;
