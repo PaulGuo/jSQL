@@ -17,16 +17,13 @@
     border: 0;
     padding: 10px 5px 10px;
     font-size: 13px;
-    overflow: hidden;
 }
 
 #screen:focus {
     outline: 0;
 }
 
-#screen::-webkit-scrollbar,
-#screen::-moz-scrollbar,
-#screen::scrollbar {
+#screen::-webkit-scrollbar {
     display: none;
 }
 
