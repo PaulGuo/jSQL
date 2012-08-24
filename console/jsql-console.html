@@ -162,13 +162,13 @@ type `help` for more informations.
                 if(handler.hasOwnProperty(cmd)) {
                     handler[cmd].call(this);
                 } else {
-                    if(!cmd.match(/^(jsql|jSQL).*$/)) {
+                    if(!cmd.match(/^.*(jsql|jSQL).*$/) && cmd.match(/[^\(]+/) && cmd.match(/[^\(]+/)[0] in jSQL) {
                         cmd = 'jSQL.' + cmd;
                     }
                     try {
                         var result = eval(cmd);
                         if(jsql.utils.isPlainObject(result) || jsql.utils.isArray(result)) {
-                            result = cmd.match(/^(jsql|jSQL)\..*$/) ? jdump.print(result) : print_r(result);
+                            result = cmd.match(/^.*(jsql|jSQL)\..*$/) ? jdump.print(result) : print_r(result);
                         }
                         writeConsole(result);
                     } catch(e) {
