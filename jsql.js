@@ -9,14 +9,14 @@
 */
 
 (function() {
-    var slice            = Array.prototype.slice,
-        hasOwnProperty   = Object.prototype.hasOwnProperty;
+    var slice               = Array.prototype.slice,
+        hasOwnProperty      = Object.prototype.hasOwnProperty;
 
-    var nativeForEach      = Array.prototype.forEach,
-        nativeIsArray      = Array.isArray,
-        nativeKeys         = Object.keys,
-        nativeIndexOf      = Array.prototype.indexOf,
-        nativeLastIndexOf  = Array.prototype.lastIndexOf;
+    var nativeForEach       = Array.prototype.forEach,
+        nativeIsArray       = Array.isArray,
+        nativeKeys          = Object.keys,
+        nativeIndexOf       = Array.prototype.indexOf,
+        nativeLastIndexOf   = Array.prototype.lastIndexOf;
 
     var jSQL, _jSQL, _jsql, _DB = {}, _DBIndexMap = {}, _protected = {};
     var jSQL_KEY_NAME = 'jSQL_Key';
@@ -319,7 +319,7 @@
 
             field = field || this._protected['field'];
 
-            if(field === '*') {
+            if(field === '*' || (field.join && field.join('') === '*')) {
                 return this._buffer;
             }
 
