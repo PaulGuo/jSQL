@@ -79,20 +79,20 @@
 
             utils.each(data, function(o, i, r) {
                 if(!titleStr) {
-                    that.echo(lineStr + '\n');
+                    that.echo(lineStr + '\r\n');
                     utils.each(o, function(o, i, r) {
                         tmpStr = '| ' + utils.fill(i, that.meta[i]) + ' ';
                         that.echo(tmpStr);
                     });
-                    that.echo('|\n');
+                    that.echo('|\r\n');
                     titleStr = true;
-                    that.echo(lineStr + '\n');
+                    that.echo(lineStr + '\r\n');
                 }
                 utils.each(o, function(o, i, r) {
                     tmpStr = '| ' + utils.fill(o, that.meta[i]) + ' ';
                     that.echo(tmpStr);
                 });
-                that.echo('|\n');
+                that.echo('|\r\n');
             });
             that.echo(lineStr);
 
