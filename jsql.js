@@ -329,9 +329,12 @@
 
             utils.each(this._buffer, function(o, i, r) {
                 tmp = {};
+                tmp[jSQL_KEY_NAME] = utils.deep(o, jSQL_KEY_NAME);
+
                 utils.each(field, function(_o, _i, _r) {
-                    tmp[_o.split('.').pop()] = utils.deep(o, _o);
-                    tmp[jSQL_KEY_NAME] = utils.deep(o, jSQL_KEY_NAME);
+                    if(o.hasOwnProperty(_o)) {
+                        tmp[_o.split('.').pop()] = utils.deep(o, _o);
+                    }
                 });
                 result.push(tmp);
             });
