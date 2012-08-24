@@ -17,6 +17,7 @@
     border: 0;
     padding: 10px 5px 10px;
     font-size: 13px;
+    overflow: hidden;
 }
 
 #screen:focus {
@@ -25,6 +26,12 @@
 
 #screen::-webkit-scrollbar {
     display: none;
+}
+
+@media screen and (-webkit-min-device-pixel-ratio: 0) {
+    #screen {
+        overflow: scroll;
+    }
 }
 
 #command {
