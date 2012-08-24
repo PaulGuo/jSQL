@@ -483,8 +483,8 @@
             }
 
             var i = 0;
-            if (arguments.length > 1) {
-                i = toInteger(arguments[1]);
+            if (arguments.length > 2) {
+                i = arguments[2];
             }
 
             // handle negative indices
