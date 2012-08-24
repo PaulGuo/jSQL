@@ -14,7 +14,9 @@
 
     var nativeForEach      = Array.prototype.forEach,
         nativeIsArray      = Array.isArray,
-        nativeKeys         = Object.keys;
+        nativeKeys         = Object.keys,
+        nativeIndexOf      = Array.prototype.indexOf,
+        nativeLastIndexOf  = Array.prototype.lastIndexOf;
 
     var jSQL, _jSQL, _jsql, _DB = {}, _DBIndexMap = {}, _protected = {};
     var jSQL_KEY_NAME = 'jSQL_Key';
@@ -466,7 +468,34 @@
             }
 
             return fn;
-        }
+        },
+
+        indexOf: function(list, sought /*, fromIndex */ ) {
+            if(nativeIndexOf) {
+                return nativeIndexOf.apply(list, this.listSlice(arguments, '1:'));
+            }
+
+            var self = list,
+                length = self.length >>> 0;
+
+            if (!length) {
+                return -1;
+            }
+
+            var i = 0;
+            if (arguments.length > 1) {
+                i = toInteger(arguments[1]);
+            }
+
+            // handle negative indices
+            i = i >= 0 ? i : Math.max(0, length + i);
+            for (; i < length; i++) {
+                if (i in self && self[i] === sought) {
+                    return i;
+                }
+            }
+            return -1;
+        }        
     };
 
     jSQL = new jSQL();
