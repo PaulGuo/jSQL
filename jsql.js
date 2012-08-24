@@ -314,8 +314,24 @@
             return this;
         },
 
-        _select: function(data, field) {
-            
+        _select: function(field) {
+            var tmp, result = [];
+
+            field = field || this._protected['field'];
+
+            if(typeof(field) === 'string') {
+                field = field.split(',');
+            }
+
+            utils.each(this._buffer, function(o, i, r) {
+                tmp = {};
+                utils.each(field, function(_o, _i, _r) {
+                    tmp[_o.split('.').pop()] = utils.deep(o, _o);
+                });
+                result.push(tmp);
+            });
+
+            return result;
         }
     };
 
