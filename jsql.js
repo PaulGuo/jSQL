@@ -101,15 +101,15 @@
             }
             
             this._buffer = this._currentDB; //reset the _buffer
-            this._protected['field'] = key;
+            this._protected['field'] = [].slice.call(utils.isArray(key) ? key : arguments);
             
             if(key === '*') {
                 return this;
             }
             
-            this.where(function(data) {
-                return typeof(utils.deep(data, key)) !== 'undefined';
-            });
+            //this.where(function(data) {
+            //    return typeof(utils.deep(data, key)) !== 'undefined';
+            //});
             
             return this;
         },
@@ -213,7 +213,7 @@
 
         findAll: function() {
             var result;
-            result = utils.clone(utils.arrayToObject(this._buffer));
+            result = utils.clone(utils.arrayToObject(this._select()));
             this.rebase();
             return result;
         },
@@ -243,7 +243,7 @@
 
         listAll: function() {
             var result;
-            result = utils.clone(this._buffer);
+            result = utils.clone(this._select());
             this.rebase();
             return result;
         },
@@ -285,7 +285,7 @@
                 return this.where(fn).first();
             }
 
-            return utils.listSlice(this._buffer, ':1');
+            return utils.listSlice(this._select(), ':1');
         },
 
         last: function(fn) {
@@ -293,7 +293,7 @@
                 return this.where(fn).last();
             }
 
-            return utils.listSlice(this._buffer, '-1:');
+            return utils.listSlice(this._select(), '-1:');
         },
 
         rebase: function() {
@@ -319,6 +319,10 @@
 
             field = field || this._protected['field'];
 
+            if(field === '*') {
+                return this._buffer;
+            }
+
             if(typeof(field) === 'string') {
                 field = field.split(',');
             }
@@ -327,6 +331,7 @@
                 tmp = {};
                 utils.each(field, function(_o, _i, _r) {
                     tmp[_o.split('.').pop()] = utils.deep(o, _o);
+                    tmp[jSQL_KEY_NAME] = utils.deep(o, jSQL_KEY_NAME);
                 });
                 result.push(tmp);
             });
