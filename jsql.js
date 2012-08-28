@@ -108,10 +108,6 @@
                 return this;
             }
             
-            //this.where(function(data) {
-            //    return typeof(utils.deep(data, key)) !== 'undefined';
-            //});
-            
             return this;
         },
 
