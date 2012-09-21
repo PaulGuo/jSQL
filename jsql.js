@@ -44,7 +44,6 @@
             this._DB = _DB;
             this._currentDB = null;
             this._buffer = null;
-            this._indexList = null;
             this._currentDBName = null;
             this._DBIndexMap = _DBIndexMap;
             this._protected = _protected;
@@ -62,7 +61,6 @@
                 indexList = utils.listSlice(arguments, '2:');
                 utils.appendKey(db, indexList);
                 _DBIndexMap[dbname] = utils.arrayToObject(db);
-                this._indexList = indexList;
             }
 
             if(utils.isPlainObject(db)) {
