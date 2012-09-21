@@ -44,6 +44,8 @@
             this._DB = _DB;
             this._currentDB = null;
             this._buffer = null;
+            this._indexList = null;
+            this._currentDBName = null;
             this._DBIndexMap = _DBIndexMap;
             this._protected = _protected;
             this.utils = utils;
@@ -60,6 +62,7 @@
                 indexList = utils.listSlice(arguments, '2:');
                 utils.appendKey(db, indexList);
                 _DBIndexMap[dbname] = utils.arrayToObject(db);
+                this._indexList = indexList;
             }
 
             if(utils.isPlainObject(db)) {
@@ -255,8 +258,15 @@
             }
         },
 
-        insert: function() {
-            //TODO
+        insert: function(item, key /*, fromIndex */) {
+            var item = utils.clone(item);
+            var fromIndex = arguments[2];
+
+            item[jSQL_KEY_NAME] = item.key || key;
+            fromIndex ?
+                this._currentDB.splice(fromIndex, 0, item) :
+                this._currentDB.push(item);
+            this.rebase();
         },
         
         limit: function(start, end) {
@@ -296,6 +306,7 @@
         rebase: function() {
             this._protected = {};
             this.select('*');
+            this._updateIndexMap();
             return this;
         },
 
@@ -337,6 +348,10 @@
             });
 
             return result;
+        },
+
+        _updateIndexMap: function() {
+            _DBIndexMap[this._currentDBName] = utils.arrayToObject(this._currentDB);
         }
     };
 
