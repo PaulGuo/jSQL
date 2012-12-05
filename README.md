@@ -30,9 +30,9 @@ Array类型：
 
 Array的每个item对应数据表的一个记录，cloumn对应字段名，value对应字段值，同Object类型不同的是，索引key是根据指定的条件或者自动生成的。
 
-`create(dbname, db)`
+`create(dbname, db /*, indexList */)`
 
-在内存中创建一个数据库
+在内存中创建一个数据库（指定indexList则根据指定字段生成唯一键）
 
 `use(dbname)`
 
