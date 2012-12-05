@@ -155,6 +155,8 @@ Array的每个item对应数据表的一个记录，cloumn对应字段名，value
 - `findAll()`
 - `listAll()`
 - `insert()`
+- `save()`
+- `saveAll()`
 
 除此之外，`use()`也会触发缓冲区重置的操作。
 

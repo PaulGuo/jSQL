@@ -288,6 +288,10 @@
         saveAll: function(data) {
             // do sth.
         },
+
+        delete: function() {
+            // do sth.
+        },
         
         limit: function(start, end) {
             var _tmp = this._buffer;
