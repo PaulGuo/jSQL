@@ -47,6 +47,7 @@
             this._currentDBName = null;
             this._DBIndexMap = _DBIndexMap;
             this._protected = _protected;
+            this._indexList = null;
             this.utils = utils;
         },
 
@@ -61,6 +62,7 @@
                 indexList = utils.listSlice(arguments, '2:');
                 utils.appendKey(db, indexList);
                 _DBIndexMap[dbname] = utils.arrayToObject(db);
+                that._indexList = indexList || null; //remember indexList for insert/save
             }
 
             if(utils.isPlainObject(db)) {
@@ -265,6 +267,27 @@
                 this._currentDB.push(item);
             this.rebase();
         },
+
+        save: function(data) {
+            // currentDB [array] -> concat -> data2Array
+            // rebuild indexMap and jSQL_Key
+            // replace currentDB with new data
+
+            if(utils.isArray(data)) {
+                utils.appendKey(db, that._indexList);
+                _DBIndexMap[dbname] = utils.arrayToObject(data);
+                that._currentDB = that._currentDB.concat(data);
+            }
+
+            if(utils.isPlainObject(data)) {
+                _DBIndexMap[dbname] = utils.clone(db);
+                db = utils.objectToArray(db);
+            }
+        },
+
+        saveAll: function(data) {
+            // do sth.
+        },
         
         limit: function(start, end) {
             var _tmp = this._buffer;
@@ -454,6 +477,7 @@
 
         appendKey: function(list, indexList) {
             var that = this;
+
             that.each(list, function(o, i, r) {
                 o[jSQL_KEY_NAME] = that.keygen(o, indexList) || i;
             });
