@@ -1,11 +1,11 @@
 jSQL
 ====
 
-a SQL like database using javascript
+a SQL like database using javascript, also has a syntax similar wrapper for python(tornado).
 
 version: v0.5.x
 
-#### API Document
+## API Document
 
 jSQL是一个用SQL的思想和API实现JavaScript数据操作（查询，过滤）的方法库（同时有基于Tornado DB封装的类似API的后端SQL查询封装），它通过链式调用的方式简化数据查询和操作，同时支持两种形式的数据源。
 
@@ -60,7 +60,7 @@ Array的每个item对应数据表的一个记录，cloumn对应字段名，value
 
 `total(scope|function)`
 
-返回当前操作数据库中符合传入条件的数据总条数
+返回当前操作数据库中含有某字段（或者符合传入条件）的数据总条数。
 
 `orderby(field, /* callback, */ order)`
 
@@ -84,19 +84,23 @@ Array的每个item对应数据表的一个记录，cloumn对应字段名，value
 
 `listAll()`
 
-以Array类型返回当前缓冲区中的数据集合
+以Array类型返回当前缓冲区中的数据集合。
 
 `update(key, data)`
 
-根据指定数据对指定key的数据进行更新操作
+根据指定数据对指定key的数据进行更新操作。
 
 `insert(item, key /*, from index */)`
 
-（在指定位置）插入一条数据
+（在指定位置）插入一条数据。
+
+`delete()`
+
+从当前操作的数据库中删除缓冲区中的数据。
 
 `limit(start, end)`
 
-返回当前缓冲区指定区域的数据（也可以使用`start:end`）
+返回当前缓冲区指定区域的数据（也可以使用`start:end`）。
 
 `keys()`
 
@@ -117,3 +121,15 @@ Array的每个item对应数据表的一个记录，cloumn对应字段名，value
 `noConflict()`
 
 避免命名空间冲突。
+
+### 闭合操作
+
+所谓闭合操作即执行到此将重置缓冲区，是链式查询的最终状态。
+
+- `count()`
+- `find()`
+- `findAll()`
+- `listAll()`
+- `insert()`
+
+除此之外，`use()`也会触发缓冲区重置的操作。

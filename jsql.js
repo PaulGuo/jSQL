@@ -102,7 +102,6 @@
                 throw('Please Select Database First.');
             }
             
-            this._buffer = this._currentDB; //reset the _buffer
             this._protected['field'] = [].slice.call(utils.isArray(key) ? key : arguments);
             
             if(key === '*') {
@@ -304,6 +303,7 @@
         rebase: function() {
             this._protected = {};
             this.select('*');
+            this._resetBuffer();
             this._updateIndexMap();
             return this;
         },
@@ -350,6 +350,10 @@
 
         _updateIndexMap: function() {
             _DBIndexMap[this._currentDBName] = utils.arrayToObject(this._currentDB);
+        },
+
+        _resetBuffer: function() {
+            this._buffer = this._currentDB; //reset the _buffer
         }
     };
 
