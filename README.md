@@ -36,7 +36,7 @@ Array的每个item对应数据表的一个记录，cloumn对应字段名，value
 
 `use(dbname)`
 
-使用指定数据库作为当前操作的缓冲区(buffer)
+使用指定数据库作为当前操作的数据库，并重置缓冲区(buffer)
 
 `drop(dbname)`
 
@@ -48,7 +48,7 @@ Array的每个item对应数据表的一个记录，cloumn对应字段名，value
 
 `db()`
 
-获取当前操作缓冲区的数据库名称
+获取当前操作的数据库名称
 
 `select(key)`
 
@@ -60,9 +60,9 @@ Array的每个item对应数据表的一个记录，cloumn对应字段名，value
 
 `total(scope|function)`
 
-返回当前操作库中符合传入条件的数据总条数
+返回当前操作数据库中符合传入条件的数据总条数
 
-`orderby(field, [callback,] order)`
+`orderby(field, /* callback, */ order)`
 
 根据指定字段的值（或者处理后的值）和排序规则对当前缓冲区的数据进行排序。
 
@@ -80,7 +80,7 @@ Array的每个item对应数据表的一个记录，cloumn对应字段名，value
 
 `find(key)`
 
-按照
+获取缓冲区中指定key的数据。
 
 `listAll()`
 
@@ -90,7 +90,7 @@ Array的每个item对应数据表的一个记录，cloumn对应字段名，value
 
 根据指定数据对指定key的数据进行更新操作
 
-`insert(item, key /* from index */)`
+`insert(item, key /*, from index */)`
 
 （在指定位置）插入一条数据
 
@@ -100,7 +100,7 @@ Array的每个item对应数据表的一个记录，cloumn对应字段名，value
 
 `keys()`
 
-返回当前缓冲区中多有数据的键名集合。
+返回当前缓冲区中所有数据的键名集合。
 
 `first(fn)`
 
@@ -112,7 +112,7 @@ Array的每个item对应数据表的一个记录，cloumn对应字段名，value
 
 `rebase()`
 
-重置缓冲区数据
+重置缓冲区数据。
 
 `noConflict()`
 
