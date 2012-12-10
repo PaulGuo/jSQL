@@ -195,16 +195,11 @@
         },
 
         iterate: function(fn) {
-            var _swap;
             this._buffer = this._buffer || this._currentDB;
             
             for(var i in this._buffer) {
                 if(this._buffer.hasOwnProperty(i)) {
-                    _swap = fn.call(this, this._buffer[i]);
-                    
-                    if(_swap) {
-                        this.update(i, _swap);
-                    }
+                    fn.call(this, utils.clone(this._buffer[i]));
                 }
             }
             return this;
@@ -247,14 +242,29 @@
             return result;
         },
         
-        update: function(key, data) {
+        update: function(fn) {
+            var _swap = this.utils.arrayToObject(this._currentDB);
+            var _tmp;
+            this._buffer = this._buffer || this._currentDB;
+
             if(!this._currentDB) {
                 throw('Please Select Database First.');
             }
-            
-            if(this._currentDB.hasOwnProperty(key)) {
-                this._currentDB[key] = data;
+
+            for(var i in this._buffer) {
+                if(this._buffer.hasOwnProperty(i)) {
+                    _tmp = fn.call(this, utils.clone(this._buffer[i]));
+                    
+                    if(_tmp) {
+                        _swap[this._buffer[i][jSQL_KEY_NAME]] = _tmp;
+                    }
+                }
             }
+
+            this._currentDB = this.utils.objectToArray(_swap);
+            this._DB[this._currentDBName] = this.utils.objectToArray(_swap);
+            this.rebase();
+            return this;
         },
 
         insert: function(item, key /*, fromIndex */) {
