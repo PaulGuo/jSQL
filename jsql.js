@@ -70,7 +70,7 @@
                 db = utils.objectToArray(db);
             }
             
-            this._DB[dbname] = db;
+            this._DB[dbname] = utils.clone(db);
             return this;
         },
 
@@ -296,11 +296,12 @@
             
             for(var i in this._buffer) {
                 if(this._buffer.hasOwnProperty(i)) {
-                    delete _swap[i[jSQL_KEY_NAME]];
+                    delete _swap[this._buffer[i][jSQL_KEY_NAME]];
                 }
             }
 
             this._currentDB = this.utils.objectToArray(_swap);
+            this._DB[this._currentDBName] = this.utils.objectToArray(_swap);
             this.rebase();
             return this;
         },
