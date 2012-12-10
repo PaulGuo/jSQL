@@ -280,9 +280,6 @@
         },
 
         append: function(data) {
-            // currentDB [array] -> concat -> data2Array
-            // rebuild indexMap and jSQL_Key
-            // replace currentDB with new data
             data = utils.clone(data);
 
             if(utils.isArray(data)) {
@@ -297,10 +294,6 @@
             this._DB[this._currentDBName] = this.utils.objectToArray(this._currentDB);
             this.rebase();
             return this;
-        },
-
-        saveAll: function(data) {
-            // do sth.
         },
 
         delete: function() {
