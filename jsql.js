@@ -276,23 +276,27 @@
                 this._currentDB.splice(fromIndex, 0, item) :
                 this._currentDB.push(item);
             this.rebase();
+            return this;
         },
 
-        save: function(data) {
+        append: function(data) {
             // currentDB [array] -> concat -> data2Array
             // rebuild indexMap and jSQL_Key
             // replace currentDB with new data
+            data = utils.clone(data);
 
             if(utils.isArray(data)) {
-                utils.appendKey(db, that._indexList);
-                _DBIndexMap[dbname] = utils.arrayToObject(data);
-                that._currentDB = that._currentDB.concat(data);
+                utils.appendKey(data, this._indexList);
+                this._currentDB = this._currentDB.concat(data);
             }
 
             if(utils.isPlainObject(data)) {
-                _DBIndexMap[dbname] = utils.clone(db);
-                db = utils.objectToArray(db);
+                this._currentDB = this._currentDB.concat(utils.objectToArray(data));
             }
+
+            this._DB[this._currentDBName] = this.utils.objectToArray(this._currentDB);
+            this.rebase();
+            return this;
         },
 
         saveAll: function(data) {
