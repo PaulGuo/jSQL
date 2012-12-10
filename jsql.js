@@ -62,7 +62,7 @@
                 indexList = utils.listSlice(arguments, '2:');
                 utils.appendKey(db, indexList);
                 _DBIndexMap[dbname] = utils.arrayToObject(db);
-                that._indexList = indexList || null; //remember indexList for insert/save
+                this._indexList = indexList || null; //remember indexList for insert/save
             }
 
             if(utils.isPlainObject(db)) {
@@ -290,7 +290,19 @@
         },
 
         delete: function() {
-            // do sth.
+            var that = this;
+            var _swap = this.utils.arrayToObject(this._currentDB);
+            this._buffer = this._buffer || this._currentDB;
+            
+            for(var i in this._buffer) {
+                if(this._buffer.hasOwnProperty(i)) {
+                    delete _swap[i[jSQL_KEY_NAME]];
+                }
+            }
+
+            this._currentDB = this.utils.objectToArray(_swap);
+            this.rebase();
+            return this;
         },
         
         limit: function(start, end) {
