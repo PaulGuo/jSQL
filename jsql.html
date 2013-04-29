@@ -3,7 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <title></title>
+    <script type="text/javascript" src="reqwest.js"></script>
     <script type="text/javascript" src="jsql.js"></script>
+    <script type="text/javascript" src="events.js"></script>
     <script type="text/javascript" src="../juicer/build/juicer-min.js"></script>
     <style type="text/css">
         body {
@@ -220,6 +222,16 @@
         console.log(data);
         console.log(dataOne);
         console.log(db.limit(0, 2).listAll());
+
+        jsql.io.jsonp('http://guokai.org/flights.php', function(r) {
+            jsql.io.jsonp('http://guokai.org/flights.php', function(r) {
+                jsql.create('flights', r.flightList);
+            });
+        });
+
+        jsql.io.jsonp('http://guokai.org/flights.php', function(r) {
+            
+        });
     </script>
 </body>
 </html>

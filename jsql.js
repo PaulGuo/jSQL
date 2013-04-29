@@ -21,7 +21,11 @@
 
     var utils = {};
     var jSQL_KEY_NAME = 'jSQL_Key';
-    var jSQL, _jSQL, _jsql, _DB = {}, _DBIndexMap = {}, _protected = {};
+    var jSQL, _jSQL, _jsql, 
+        _DB = {}, 
+        _DBIndexMap = {}, 
+        _protected = {},
+        _events = {};
     
     if(typeof(this.jSQL) !== 'undefined') {
         _jSQL = this.jSQL;
@@ -48,6 +52,7 @@
             this._DBIndexMap = _DBIndexMap;
             this._protected = _protected;
             this._indexList = null;
+            this._events = _events;
             this.utils = utils;
         },
 
@@ -71,6 +76,8 @@
             }
             
             this._DB[dbname] = utils.clone(db);
+            this._events[dbname] = this._events[dbname] || new this.Events();
+            this._events[dbname].trigger('create');
             return this;
         },
 
@@ -88,6 +95,7 @@
         drop: function(dbname) {
             if(this._DB.hasOwnProperty(dbname)) {
                 delete this._DB[dbname];
+                this._events[dbname].trigger('drop');
             }
         },
 
@@ -367,6 +375,78 @@
             return this;
         },
 
+        io: new function() {
+            var that = this;
+
+            this.ajax = function(uri, data, success, error) {
+                var args = [].slice.call(arguments);
+
+                if(args.length < 4) {
+                    args.splice(1, 0, {});
+                }
+
+                uri = args[0],
+                data = args[1],
+                success = args[2],
+                error = args[3];
+
+                data._t = utils.uuid();
+
+                reqwest({
+                    url: uri,
+                    type: 'json',
+                    method: 'get',
+                    data: data,
+                    success: success,
+                    error: error
+                });
+            },
+
+            this.jsonp = function(uri, data, success, error) {
+                var args = [].slice.call(arguments);
+
+                if(args.length < 4) {
+                    args.splice(1, 0, {});
+                }
+
+                uri = args[0],
+                data = args[1],
+                success = args[2],
+                error = args[3];
+
+                if(uri.match(/\?/igm)) {
+                    if(uri.lastIndexOf('&') === uri.length - 1) {
+                        uri += 'callback=?&_t=' + utils.uuid();
+                    } else {
+                        uri += '&callback=?&_t=' + utils.uuid();
+                    }
+                } else {
+                    uri += '?callback=?&_t=' + utils.uuid();
+                }
+
+                reqwest({
+                    url: uri,
+                    type: 'jsonp',
+                    data: data,
+                    success: success,
+                    error: error
+                });
+            }
+        },
+
+        on: function(database, event, callback) {
+            this._events[database] = this._events[database] || new this.Events();
+            return this._events[database].on(event, callback);
+        },
+
+        off: function(database, event, callback) {
+            return this._events[database].off(event, callback);
+        },
+
+        trigger: function(database, event) {
+            return this._events[database].trigger(event);
+        },
+
         _select: function(field) {
             var tmp, result = [];
 
@@ -581,6 +661,10 @@
                 }
             }
             return -1;
+        },
+
+        uuid: function() {
+            return new Date().getTime() + '_' + parseInt(Math.random() * 1000);
         }
     };
 
