@@ -224,8 +224,9 @@
         console.log(db.limit(0, 2).listAll());
 
         jsql.io.jsonp('http://guokai.org/flights.php', function(r) {
+            jsql.create('flights', r.flightList);
             jsql.io.jsonp('http://guokai.org/flights.php', function(r) {
-                jsql.create('flights', r.flightList);
+                jsql.append('flights', r.flightList);
             });
         });
 
