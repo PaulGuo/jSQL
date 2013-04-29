@@ -167,6 +167,7 @@
             });
             
             this._buffer = _array;
+            this._protected['sort'] = true;
             return this;
         },
 
@@ -271,8 +272,8 @@
 
             this._currentDB = this.utils.objectToArray(_swap);
             this._DB[this._currentDBName] = this.utils.objectToArray(_swap);
+            this._events[this._currentDBName].trigger('update');
             this.rebase();
-            this._events[dbname].trigger('update');
             return this;
         },
 
@@ -284,6 +285,7 @@
             fromIndex ?
                 this._currentDB.splice(fromIndex, 0, item) :
                 this._currentDB.push(item);
+            this._events[this._currentDBName].trigger('update');
             this.rebase();
             return this;
         },
@@ -307,6 +309,7 @@
             }
 
             this._DB[this._currentDBName] = this.utils.objectToArray(this._currentDB);
+            this._events[this._currentDBName].trigger('update');
             this.rebase();
             return this;
         },
@@ -462,6 +465,10 @@
             var tmp, result = [];
 
             field = field || this._protected['field'];
+
+            if(this._protected['sort'] === true) {
+                this._events[this._currentDBName].trigger('sort');
+            }
 
             if(field === '*' || (field.join && field.join('') === '*')) {
                 return this._buffer;
