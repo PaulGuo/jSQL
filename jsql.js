@@ -77,7 +77,7 @@
             
             this._DB[dbname] = utils.clone(db);
             this._events[dbname] = this._events[dbname] || new this.Events();
-            this._events[dbname].trigger('create');
+            this.trigger(dbname, 'create');
             return this;
         },
 
@@ -95,7 +95,7 @@
         drop: function(dbname) {
             if(this._DB.hasOwnProperty(dbname)) {
                 delete this._DB[dbname];
-                this._events[dbname].trigger('drop');
+                this.trigger(dbname, 'drop');
             }
         },
 
@@ -272,7 +272,7 @@
 
             this._currentDB = this.utils.objectToArray(_swap);
             this._DB[this._currentDBName] = this.utils.objectToArray(_swap);
-            this._events[this._currentDBName].trigger('update');
+            this.trigger(this._currentDBName, 'update');
             this.rebase();
             return this;
         },
@@ -285,7 +285,7 @@
             fromIndex ?
                 this._currentDB.splice(fromIndex, 0, item) :
                 this._currentDB.push(item);
-            this._events[this._currentDBName].trigger('update');
+            this.trigger(this._currentDBName, 'update');
             this.rebase();
             return this;
         },
@@ -309,7 +309,7 @@
             }
 
             this._DB[this._currentDBName] = this.utils.objectToArray(this._currentDB);
-            this._events[this._currentDBName].trigger('update');
+            this.trigger(this._currentDBName, 'update');
             this.rebase();
             return this;
         },
@@ -458,6 +458,7 @@
         },
 
         trigger: function(database, event) {
+            console.log('%s: trigger - %s', database, event);
             return this._events[database].trigger(event);
         },
 
@@ -467,7 +468,7 @@
             field = field || this._protected['field'];
 
             if(this._protected['sort'] === true) {
-                this._events[this._currentDBName].trigger('sort');
+                this.trigger(this._currentDBName, 'sort');
             }
 
             if(field === '*' || (field.join && field.join('') === '*')) {
