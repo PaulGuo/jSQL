@@ -392,7 +392,7 @@
 
                 data._t = utils.uuid();
 
-                reqwest({
+                this.reqwest({
                     url: uri,
                     type: 'json',
                     method: 'get',
@@ -424,7 +424,7 @@
                     uri += '?callback=?&_t=' + utils.uuid();
                 }
 
-                reqwest({
+                this.reqwest({
                     url: uri,
                     type: 'jsonp',
                     data: data,
