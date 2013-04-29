@@ -355,6 +355,10 @@
             return utils.listSlice(this._select(), '-1:');
         },
 
+        distinct: function(field) {
+            return utils.distinct(this.listAll());
+        },
+
         rebase: function() {
             this._protected = {};
             this.select('*');
@@ -463,6 +467,11 @@
             utils.each(this._buffer, function(o, i, r) {
                 tmp = {};
                 tmp[jSQL_KEY_NAME] = utils.deep(o, jSQL_KEY_NAME);
+
+                if(field.length === 1) {
+                    result.push(utils.deep(o, field[0]));
+                    return;
+                }
 
                 utils.each(field, function(_o, _i, _r) {
                     if(o.hasOwnProperty(_o)) {
@@ -663,8 +672,45 @@
             return -1;
         },
 
+        lastIndexOf: function lastIndexOf(list, sought /*, fromIndex */) {
+            if(nativeLastIndexOf) {
+                return nativeLastIndexOf.apply(list, this.listSlice(arguments, '1:'));
+            }
+
+            var self = list,
+                length = self.length >>> 0;
+
+            if (!length) {
+                return -1;
+            }
+            var i = length - 1;
+            if (arguments.length > 1) {
+                i = Math.min(i, toInteger(arguments[1]));
+            }
+            // handle negative indices
+            i = i >= 0 ? i : length - Math.abs(i);
+            for (; i >= 0; i--) {
+                if (i in self && sought === self[i]) {
+                    return i;
+                }
+            }
+            return -1;
+        },
+
         uuid: function() {
             return new Date().getTime() + '_' + parseInt(Math.random() * 1000);
+        },
+
+        distinct: function(arr) {
+            var tmp = [];
+
+            for(var i = 0; i < arr.length; i++) {
+                if(tmp.indexOf(arr[i]) === -1) {
+                    tmp.push(arr[i]);
+                }
+            }
+
+            return tmp;
         }
     };
 
