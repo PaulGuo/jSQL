@@ -56,8 +56,9 @@
             this.utils = utils;
         },
 
-        create: function(dbname, db) {
+        create: function(dbname, db /*, scope */) {
             var indexList;
+            var that = this;
 
             if(this._DB.hasOwnProperty(dbname)) {
                 throw('DB Already Exist.');
@@ -73,6 +74,28 @@
             if(utils.isPlainObject(db)) {
                 _DBIndexMap[dbname] = utils.clone(db);
                 db = utils.objectToArray(db);
+            }
+
+            if(typeof(db) === 'string' && db.match(/^http(s)?:\/\//igm)) {
+                var scope = arguments[2] || '*';
+                var proxyCallback = function(data) {
+                    db = typeof(scope) === 'function' ? 
+                        scope.call(this, data) : 
+                        scope === '*' ? 
+                            data : utils.deep(data, scope);
+
+                    that._DB[dbname] = utils.clone(db);
+                    that._events[dbname] = that._events[dbname] || new that.Events();
+                    that.trigger(dbname, 'create');
+                };
+
+                if(db.match('callback=')) {
+                    this.io.jsonp(db, {}, proxyCallback, proxyCallback);
+                } else {
+                    this.io.ajax(db, {}, proxyCallback, proxyCallback);
+                }
+
+                return this;
             }
             
             this._DB[dbname] = utils.clone(db);
@@ -428,14 +451,16 @@
                 success = args[2],
                 error = args[3];
 
-                if(uri.match(/\?/igm)) {
-                    if(uri.lastIndexOf('&') === uri.length - 1) {
-                        uri += 'callback=?&_t=' + utils.uuid();
+                if(!uri.match('callback=')) {
+                    if(uri.match(/\?/igm)) {
+                        if(uri.lastIndexOf('&') === uri.length - 1) {
+                            uri += 'callback=?&_t=' + utils.uuid();
+                        } else {
+                            uri += '&callback=?&_t=' + utils.uuid();
+                        }
                     } else {
-                        uri += '&callback=?&_t=' + utils.uuid();
+                        uri += '?callback=?&_t=' + utils.uuid();
                     }
-                } else {
-                    uri += '?callback=?&_t=' + utils.uuid();
                 }
 
                 this.reqwest({
@@ -460,6 +485,11 @@
         trigger: function(database, event) {
             console.log('%s: trigger - %s', database, event);
             return this._events[database].trigger(event);
+        },
+
+        alias: function(name) {
+            window[name] = this;
+            return this;
         },
 
         _select: function(field) {
