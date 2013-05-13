@@ -2,6 +2,7 @@
     <property name="version" value="0.6.0" />
     <property name="build.dir" value="./build/" />
     <property name="src.dir" value="./" />
+    <property name="uglifyjs.options" value="--no-mangle-functions" />
 
     <tstamp>
         <format property="build.time"
@@ -28,5 +29,19 @@
         </replaceregexp>
 
         <echo>version replace complete!</echo>
+    </target>
+
+    <target name="minify">
+        <apply executable="uglifyjs" failonerror="true">
+            <fileset dir="${build.dir}" includes="jsql.js"/>
+            <mapper type="glob" from="*.js" to="${build.dir}/*-min.js"/>
+
+            <arg line="${uglifyjs.options}"/>
+            <arg line="-o"/>
+            <targetfile/>
+            <srcfile/>
+        </apply>
+
+        <echo>minify complete!</echo>
     </target>
 </project>
