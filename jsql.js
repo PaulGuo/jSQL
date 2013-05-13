@@ -3,7 +3,7 @@
     a SQL like database using javascript
     website: http://jsql.us
     licence: MIT Licence
-    version: 0.6.0 dev
+    version: @VERSION@-dev
     
     description: using jSQL to process the data easily.
 */
@@ -40,7 +40,7 @@
     };
     
     jSQL.prototype = {
-        version: '0.6.0-dev',
+        version: '@VERSION@-dev',
 
         init: function() {
             this._jSQL = _jSQL;

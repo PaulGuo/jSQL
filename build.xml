@@ -1,5 +1,5 @@
 <project name="jsql" default="concatenate">
-    <property name="version" value="0.1.0" />
+    <property name="version" value="0.6.0" />
     <property name="build.dir" value="./build/" />
     <property name="src.dir" value="./" />
 
@@ -20,6 +20,13 @@
             <footer>/* Build Time: ${build.time} */</footer>
             <filelist dir="${src.dir}" files="jsql.js,reqwest.js,events.js" />
         </concat>
+
         <echo>concatenate complete!</echo>
+
+        <replaceregexp match="@VERSION@" replace="${version}" flags="g" byline="true">
+            <fileset dir="${build.dir}" includes="**/*"/>
+        </replaceregexp>
+
+        <echo>version replace complete!</echo>
     </target>
 </project>

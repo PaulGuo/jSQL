@@ -27,7 +27,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
     a SQL like database using javascript
     website: http://jsql.us
     licence: MIT Licence
-    version: 0.6.0 dev
+    version: 0.6.0-dev
     
     description: using jSQL to process the data easily.
 */
@@ -1487,4 +1487,4 @@ jsql.Events = (function() {
 
   return Events
 })();
-/* Build Time: May 13, 2013 10:40:59 */
+/* Build Time: May 13, 2013 10:44:25 */
