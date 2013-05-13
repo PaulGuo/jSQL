@@ -1,0 +1,25 @@
+<project name="jsql" default="concatenate">
+    <property name="version" value="0.1.0" />
+    <property name="build.dir" value="./build/" />
+    <property name="src.dir" value="./" />
+
+    <tstamp>
+        <format property="build.time"
+              pattern="MMMM d, yyyy hh:mm:ss"
+              locale="en,US"/>
+    </tstamp>
+
+    <target name="concatenate">
+        <loadfile property="license" srcfile="LICENSE.md" />
+        <concat destfile="${build.dir}/jsql.js" fixlastline="yes" eol="lf">
+            <header trimleading="yes">
+                /*!
+                    ${license}
+                */
+            </header>
+            <footer>/* Build Time: ${build.time} */</footer>
+            <fileset dir="${src.dir}" includes="*.js" excludes="jsql-min.js"/>
+        </concat>
+        <echo>concatenate complete!</echo>
+    </target>
+</project>
