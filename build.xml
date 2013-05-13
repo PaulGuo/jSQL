@@ -1,7 +1,7 @@
 <project name="jsql" default="concatenate">
     <property name="version" value="0.6.0" />
     <property name="build.dir" value="./build/" />
-    <property name="src.dir" value="./" />
+    <property name="src.dir" value="./src/" />
     <property name="uglifyjs.options" value="--no-mangle-functions" />
 
     <tstamp>
