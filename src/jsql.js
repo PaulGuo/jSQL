@@ -105,6 +105,11 @@
         },
 
         use: function(dbname) {
+            if(dbname === 'global') {
+                this._currentDBName = dbname;
+                return this;
+            }
+
             if(!this._DB.hasOwnProperty(dbname)) {
                 throw('Database Not Exist.');
             }
@@ -474,15 +479,39 @@
         },
 
         on: function(database, event, callback) {
+            var args = [].slice.call(arguments);
+
+            if(arguments.length < 3) {
+                database = this._currentDBName;
+                event = args[0];
+                callback = args[1];
+            }
+
             this._events[database] = this._events[database] || new this.Events();
             return this._events[database].on(event, callback);
         },
 
         off: function(database, event, callback) {
+            var args = [].slice.call(arguments);
+
+            if(arguments.length < 3) {
+                database = this._currentDBName;
+                event = args[0];
+                callback = args[1];
+            }
+
             return this._events[database].off(event, callback);
         },
 
         trigger: function(database, event) {
+            var args = [].slice.call(arguments);
+
+            if(arguments.length < 2) {
+                database = this._currentDBName;
+                event = args[0];
+                callback = args[1];
+            }
+
             console.log('%s: trigger - %s', database, event);
             return this._events[database].trigger(event);
         },

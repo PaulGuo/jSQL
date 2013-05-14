@@ -129,6 +129,11 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
         },
 
         use: function(dbname) {
+            if(dbname === 'global') {
+                this._currentDBName = dbname;
+                return this;
+            }
+
             if(!this._DB.hasOwnProperty(dbname)) {
                 throw('Database Not Exist.');
             }
@@ -498,15 +503,39 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
         },
 
         on: function(database, event, callback) {
+            var args = [].slice.call(arguments);
+
+            if(arguments.length < 3) {
+                database = this._currentDBName;
+                event = args[0];
+                callback = args[1];
+            }
+
             this._events[database] = this._events[database] || new this.Events();
             return this._events[database].on(event, callback);
         },
 
         off: function(database, event, callback) {
+            var args = [].slice.call(arguments);
+
+            if(arguments.length < 3) {
+                database = this._currentDBName;
+                event = args[0];
+                callback = args[1];
+            }
+
             return this._events[database].off(event, callback);
         },
 
         trigger: function(database, event) {
+            var args = [].slice.call(arguments);
+
+            if(arguments.length < 2) {
+                database = this._currentDBName;
+                event = args[0];
+                callback = args[1];
+            }
+
             console.log('%s: trigger - %s', database, event);
             return this._events[database].trigger(event);
         },
@@ -1487,4 +1516,4 @@ jsql.Events = (function() {
 
   return Events
 })();
-/* Build Time: May 13, 2013 11:22:30 */
+/* Build Time: May 14, 2013 11:49:04 */
