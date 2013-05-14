@@ -131,6 +131,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
         use: function(dbname) {
             if(dbname === 'global') {
                 this._currentDBName = dbname;
+                this._events[dbname] = this._events[dbname] || new this.Events();
                 return this;
             }
 
@@ -1516,4 +1517,4 @@ jsql.Events = (function() {
 
   return Events
 })();
-/* Build Time: May 14, 2013 11:49:04 */
+/* Build Time: May 14, 2013 02:12:59 */

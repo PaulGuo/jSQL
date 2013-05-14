@@ -107,6 +107,7 @@
         use: function(dbname) {
             if(dbname === 'global') {
                 this._currentDBName = dbname;
+                this._events[dbname] = this._events[dbname] || new this.Events();
                 return this;
             }
 
