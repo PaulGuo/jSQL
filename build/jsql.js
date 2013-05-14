@@ -129,12 +129,6 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
         },
 
         use: function(dbname) {
-            if(dbname === 'global') {
-                this._currentDBName = dbname;
-                this._events[dbname] = this._events[dbname] || new this.Events();
-                return this;
-            }
-
             if(!this._DB.hasOwnProperty(dbname)) {
                 throw('Database Not Exist.');
             }
@@ -504,41 +498,23 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
         },
 
         on: function(database, event, callback) {
-            var args = [].slice.call(arguments);
-
-            if(arguments.length < 3) {
-                database = this._currentDBName;
-                event = args[0];
-                callback = args[1];
-            }
-
             this._events[database] = this._events[database] || new this.Events();
             return this._events[database].on(event, callback);
         },
 
         off: function(database, event, callback) {
-            var args = [].slice.call(arguments);
-
-            if(arguments.length < 3) {
-                database = this._currentDBName;
-                event = args[0];
-                callback = args[1];
-            }
-
             return this._events[database].off(event, callback);
         },
 
         trigger: function(database, event) {
-            var args = [].slice.call(arguments);
+            var args = [].slice.call(arguments, 1);
 
-            if(arguments.length < 2) {
-                database = this._currentDBName;
-                event = args[0];
-                callback = args[1];
+            if(!this._events.hasOwnProperty(database)) {
+                return false;
             }
 
             console.log('%s: trigger - %s', database, event);
-            return this._events[database].trigger(event);
+            return this._events[database].trigger.apply(this._events[database], args);
         },
 
         alias: function(name) {
@@ -1517,4 +1493,4 @@ jsql.Events = (function() {
 
   return Events
 })();
-/* Build Time: May 14, 2013 02:12:59 */
+/* Build Time: May 14, 2013 02:35:08 */
