@@ -242,7 +242,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
                     }
                     
                     if(_swap) {
-                        _tmp.push(utils.clone(this._buffer[i]));
+                        _tmp.push(this._buffer[i]);
                     }
                 }
             }
@@ -255,7 +255,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
             
             for(var i in this._buffer) {
                 if(this._buffer.hasOwnProperty(i)) {
-                    fn.call(this, utils.clone(this._buffer[i]));
+                    fn.call(this, this._buffer[i]);
                 }
             }
             return this;
@@ -1493,4 +1493,4 @@ jsql.Events = (function() {
 
   return Events
 })();
-/* Build Time: May 14, 2013 02:35:08 */
+/* Build Time: May 20, 2013 11:09:33 */

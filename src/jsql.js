@@ -218,7 +218,7 @@
                     }
                     
                     if(_swap) {
-                        _tmp.push(utils.clone(this._buffer[i]));
+                        _tmp.push(this._buffer[i]);
                     }
                 }
             }
@@ -231,7 +231,7 @@
             
             for(var i in this._buffer) {
                 if(this._buffer.hasOwnProperty(i)) {
-                    fn.call(this, utils.clone(this._buffer[i]));
+                    fn.call(this, this._buffer[i]);
                 }
             }
             return this;
