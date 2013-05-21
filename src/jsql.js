@@ -120,6 +120,8 @@
                 delete this._DB[dbname];
                 this.trigger(dbname, 'drop');
             }
+
+            return this;
         },
 
         dbs: function() {

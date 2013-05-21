@@ -144,6 +144,8 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
                 delete this._DB[dbname];
                 this.trigger(dbname, 'drop');
             }
+
+            return this;
         },
 
         dbs: function() {
@@ -1493,4 +1495,4 @@ jsql.Events = (function() {
 
   return Events
 })();
-/* Build Time: May 20, 2013 11:09:33 */
+/* Build Time: May 22, 2013 01:09:00 */
