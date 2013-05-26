@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>magicData.md</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>magicData.md</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap for-h2">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              <h2>jSQL <code>数据的异想世界</code></h2>
+<hr>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap for-h3">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <h3>Why Should I Use jSQL?</h3>
+<p>使用jSQL可以让你更加专注于业务需求和逻辑，通过jSQL可以将排序、筛选等数据查询的底层操作同业务逻辑完美分离。从而提高代码的可维护性和开发效率。jSQL不仅可以用于PC端，也可以在移动手持设备的应用中使用。除了JavaScript版本的jSQL，如果你喜欢jSQL的使用方式和API，同时你又是一个Python后端开发人员且不喜欢庞大的ORM，同样有短小精干的Python-jSQL可以让你在Python框架中方便的对MySQL进行操作。jSQL不是一个库，它是一个使得数据的查询操作变得更方便快捷高效的解决思路和思想的抽象。</p>
+<h3>API Document</h3>
+<p>jSQL是一个用SQL的思想和API实现JavaScript数据操作（查询，过滤）的方法库（同时有基于Tornado DB封装的类似API的后端SQL查询封装），它通过链式调用的方式简化数据查询和操作，同时支持两种形式的数据源。</p>
+<ul>
+<li><code>Object</code></li>
+<li><code>Array</code></li>
+</ul>
+<p>Object类型：</p>
+<p>{
+key: {column: value},
+key: {column: value}
+}</p>
+<p>Object的key对应数据表的唯一索引，cloumn映射为数据表的字段，value对应数据表相应字段的值。</p>
+<p>Array类型：</p>
+<p>[
+{column: value},
+{column: value}
+]</p>
+<p>Array的每个item对应数据表的一个记录，cloumn对应字段名，value对应字段值，同Object类型不同的是，索引key是根据指定的条件或者自动生成的。</p>
+<p><code>create(dbname, db /*, indexList */)</code></p>
+<p>在内存中创建一个数据库（指定indexList则根据指定字段生成唯一键）</p>
+<p>用法示例1:</p>
+<p>jsql.io(&#39;uri&#39;).create(&#39;local&#39;, &#39;data.result&#39;)</p>
+<p>用法示例2:</p>
+<p>jsql.create(&#39;local&#39;, {})</p>
+<p><code>use(dbname)</code></p>
+<p>使用指定数据库作为当前操作的数据库，并重置缓冲区(buffer)</p>
+<p><code>drop(dbname)</code></p>
+<p>丢弃指定数据库，同时从内存中抹除</p>
+<p><code>dbs()</code></p>
+<p>获取当前内存中存在的所有数据库名称</p>
+<p><code>db()</code></p>
+<p>获取当前操作的数据库名称</p>
+<p><code>select(key)</code></p>
+<p>指定获取的数据字段名称</p>
+<p><code>count()</code></p>
+<p>获取当前操作缓冲区的数据条数</p>
+<p><code>total(scope|function)</code></p>
+<p>返回当前操作数据库中含有某字段（或者符合传入条件）的数据总条数。</p>
+<p><code>orderby(field, /* callback, */ order)</code></p>
+<p>根据指定字段的值（或者处理后的值）和排序规则对当前缓冲区的数据进行排序。</p>
+<p><code>where(fn|[fn, …])</code></p>
+<p>返回当前缓冲区中符合指定条件的数据集合（如果传入为一组fn，则为并集）。</p>
+<p><code>iterate(fn)</code></p>
+<p>根据指定的方法对当前缓冲区中的数据进行遍历。</p>
+<p><code>findAll(fn)</code></p>
+<p>以Object类型返回当前缓冲区中的数据集合</p>
+<p><code>find(key)</code></p>
+<p>获取缓冲区中指定key的数据。</p>
+<p><code>listAll()</code></p>
+<p>以Array类型返回当前缓冲区中的数据集合。</p>
+<p><code>update(key, data)</code></p>
+<p>根据指定数据对指定key的数据进行更新操作。</p>
+<p><code>insert(item, key /*, from index */)</code></p>
+<p>（在指定位置）插入一条数据。</p>
+<p><code>save(data)</code></p>
+<p>向当前操作的数据库中追加一条数据。</p>
+<p><code>saveAll(data)</code></p>
+<p>强当前操作的数据库中追加一批数据。</p>
+<p><code>delete()</code></p>
+<p>从当前操作的数据库中删除缓冲区中的数据。</p>
+<p><code>limit(start, end)</code></p>
+<p>返回当前缓冲区指定区域的数据（也可以使用<code>start:end</code>）。</p>
+<p><code>keys()</code></p>
+<p>返回当前缓冲区中所有数据的键名集合。</p>
+<p><code>first(fn)</code></p>
+<p>返回满足条件的第一条数据。</p>
+<p><code>last(fn)</code></p>
+<p>返回满足条件的最后一条数据。</p>
+<p><code>distinct()</code></p>
+<p>以Array类型返回当前缓冲区中去重后的数组集合。</p>
+<p><code>rebase()</code></p>
+<p>重置缓冲区数据。</p>
+<p><code>noConflict()</code></p>
+<p>避免命名空间冲突。</p>
+<p><code>io</code></p>
+<p>数据接口异步请求。</p>
+<ul>
+<li><code>io.ajax(uri, data, success, error)</code></li>
+<li><p><code>io.jsonp(uri, data, success, error)</code></p>
+</li>
+<li><p>uri: 请求接口的地址</p>
+</li>
+<li>data: 请求接口的附加数据</li>
+<li>success: 调用成功的回调函数</li>
+<li>error: 调用出错的回调函数</li>
+</ul>
+<p><code>on(database, event, callback)</code></p>
+<p>监听数据库事件。</p>
+<ul>
+<li>database: 被监听的数据库名</li>
+<li>event: 被监听的事件名</li>
+<li>create</li>
+<li>update</li>
+<li>drop</li>
+<li>io:start</li>
+<li>io:complete</li>
+<li>io:success</li>
+<li>io:error</li>
+<li>callback: 事件发生后触发的回调函数</li>
+</ul>
+<p><code>off(database[, event])</code></p>
+<p>取消对数据库事件的监听。</p>
+<p><code>before(database, event, callback)</code></p>
+<p>AOP方法，在数据库事件触发前的操作。</p>
+<p><code>after(database, event, callback)</code></p>
+<p>AOP方法，在数据库事件触发后的操作。</p>
+<p><code>trigger(database, event)</code></p>
+<p>手动触发指定数据库的指定事件。</p>
+<h3>闭合操作</h3>
+<p>所谓闭合操作即执行到此将重置缓冲区，是链式查询的最终状态。</p>
+<ul>
+<li><code>count()</code></li>
+<li><code>find()</code></li>
+<li><code>findAll()</code></li>
+<li><code>listAll()</code></li>
+<li><code>insert()</code></li>
+<li><code>save()</code></li>
+<li><code>saveAll()</code></li>
+<li><code>update()</code></li>
+</ul>
+<p>除此之外，<code>use()</code>也会触发缓冲区重置的操作。</p>
+
+            </div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>

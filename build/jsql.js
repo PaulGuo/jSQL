@@ -111,13 +111,23 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
                     that._DB[dbname] = utils.clone(db);
                     that._events[dbname] = that._events[dbname] || new that.Events();
                     that.trigger(dbname, 'create');
+                    that.trigger(dbname, 'io:success');
+                    that.trigger(dbname, 'io:complete');
+                };
+
+                var proxyFallback = function() {
+                    that._events[dbname] = that._events[dbname] || new that.Events();
+                    that.trigger(dbname, 'io:error');
                 };
 
                 if(db.match('callback=')) {
-                    this.io.jsonp(db, {}, proxyCallback, proxyCallback);
+                    this.io.jsonp(db, {}, proxyCallback, proxyFallback);
                 } else {
-                    this.io.ajax(db, {}, proxyCallback, proxyCallback);
+                    this.io.ajax(db, {}, proxyCallback, proxyFallback);
                 }
+
+                this._events[dbname] = this._events[dbname] || new this.Events();
+                this.trigger(dbname, 'io:start');
 
                 return this;
             }
@@ -1495,4 +1505,4 @@ jsql.Events = (function() {
 
   return Events
 })();
-/* Build Time: May 22, 2013 01:09:00 */
+/* Build Time: May 26, 2013 03:19:15 */
