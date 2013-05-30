@@ -349,7 +349,7 @@
             return this;
         },
 
-        delete: function() {
+        remove: function() {
             var that = this;
             var _swap = this.utils.arrayToObject(this._currentDB);
             this._buffer = this._buffer || this._currentDB;

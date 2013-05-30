@@ -373,7 +373,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
             return this;
         },
 
-        delete: function() {
+        remove: function() {
             var that = this;
             var _swap = this.utils.arrayToObject(this._currentDB);
             this._buffer = this._buffer || this._currentDB;
@@ -1505,4 +1505,4 @@ jsql.Events = (function() {
 
   return Events
 })();
-/* Build Time: May 26, 2013 03:19:15 */
+/* Build Time: May 30, 2013 08:40:23 */

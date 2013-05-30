@@ -380,14 +380,14 @@ result = db.listAll();
 <pre><code>jsql.append('local', {});
 </code></pre>
 
-<p><code>delete()</code></p>
+<p><code>remove()</code></p>
 
 <p>从当前操作的数据库中删除缓冲区中的数据。</p>
 
 <pre><code>db = jsql.use('local');
 db.where(function(item) {
     return item.data.age &lt; 24;
-}).delete();
+}).remove();
 </code></pre>
 
 <p><code>limit(start, end)</code></p>

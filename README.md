@@ -157,14 +157,14 @@ Array的每个item对应数据表的一个记录，cloumn对应字段名，value
 
 	jsql.append('local', {});
 
-`delete()`
+`remove()`
 
 从当前操作的数据库中删除缓冲区中的数据。
 
 	db = jsql.use('local');
 	db.where(function(item) {
 		return item.data.age < 24;
-	}).delete();
+	}).remove();
 
 `limit(start, end)`
 
