@@ -726,6 +726,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
         parseFn: function(fn) {
             if(typeof(fn) === 'string') {
+                fn = fn || true;
                 fn = new Function('data', 'with(data) { return ' + fn + '; }');
             }
 
@@ -1505,4 +1506,4 @@ jsql.Events = (function() {
 
   return Events
 })();
-/* Build Time: May 30, 2013 08:40:23 */
+/* Build Time: August 7, 2013 04:40:59 */

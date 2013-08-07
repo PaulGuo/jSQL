@@ -702,6 +702,7 @@
 
         parseFn: function(fn) {
             if(typeof(fn) === 'string') {
+                fn = fn || true;
                 fn = new Function('data', 'with(data) { return ' + fn + '; }');
             }
 
