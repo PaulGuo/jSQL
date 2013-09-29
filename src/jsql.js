@@ -26,6 +26,38 @@
         _DBIndexMap = {}, 
         _protected = {},
         _events = {};
+
+    var logcat = {
+        error: function(error) {
+            if(typeof(console) !== 'undefined') {
+                if(console.warn) {
+                    console.warn(error);
+                    return;
+                }
+
+                if(console.log) {
+                    console.log(error);
+                    return;
+                }
+            }
+
+            throw(error);
+        },
+
+        info: function(info) {
+            if(typeof(console) !== 'undefined') {
+                if(console.info) {
+                    console.info(info);
+                    return;
+                }
+
+                if(console.log) {
+                    console.log(info);
+                    return;
+                }
+            }
+        }
+    };
     
     if(typeof(this.jSQL) !== 'undefined') {
         _jSQL = this.jSQL;
@@ -61,7 +93,7 @@
             var that = this;
 
             if(this._DB.hasOwnProperty(dbname)) {
-                throw('DB Already Exist.');
+                logcat.error('DB Already Exist.');
             }
 
             if(utils.isArray(db)) {
@@ -501,7 +533,7 @@
                 return false;
             }
 
-            console.log('%s: trigger - %s', database, event);
+            logcat.info('%s: trigger - %s', database, event);
             return this._events[database].trigger.apply(this._events[database], args);
         },
 
