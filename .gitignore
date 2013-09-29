@@ -2,3 +2,7 @@
 .swap
 .svn
 *.swp
+.sw*
+.idea/*
+node_modules
+npm-debug.log
