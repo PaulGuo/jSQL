@@ -52,8 +52,18 @@ KISSY.add(function(S) {
         _protected = {},
         _events = {};
 
+    var interpolation = function(str) {
+        var args = [].slice.call(arguments, 1);
+
+        return str.replace(/%s/igm, function() {
+            return args.shift() || '';
+        });
+    };
+
     var logcat = {
         error: function(error) {
+            error = interpolation(error);
+
             if(typeof(console) !== 'undefined') {
                 if(console.warn) {
                     console.warn(error);
@@ -70,6 +80,8 @@ KISSY.add(function(S) {
         },
 
         info: function(info) {
+            info = interpolation(info);
+
             if(typeof(console) !== 'undefined') {
                 if(console.info) {
                     console.info(info);
@@ -1541,4 +1553,4 @@ jsql.Events = (function() {
 })();
 return jSQL;
 });
-/* Build Time: September 29, 2013 11:52:24 */
+/* Build Time: September 29, 2013 04:35:23 */
