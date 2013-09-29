@@ -4,7 +4,7 @@ KISSY.add(function(S) {
     a SQL like database using javascript
     website: http://jsql.us
     licence: MIT Licence
-    version: @VERSION@-dev
+    version: 0.7.0-dev
     
     description: using jSQL to process the data easily.
 */
@@ -73,7 +73,7 @@ KISSY.add(function(S) {
     };
     
     jSQL.prototype = {
-        version: '@VERSION@-dev',
+        version: '0.7.0-dev',
 
         init: function() {
             this._jSQL = _jSQL;
