@@ -1,2 +1,8 @@
 .DS_Store
-.swp
+.swap
+.svn
+*.swp
+.sw*
+.idea/*
+node_modules
+npm-debug.log

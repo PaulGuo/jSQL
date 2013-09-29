@@ -1,0 +1,63 @@
+.wrapper {
+    padding: 0 10px;
+    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Droid Sans Mono', 'Consolas', monospace;
+    background-color: #141414;
+    border: 15px solid #ccc;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+}
+
+#screen {
+    width: 100%;
+    height: 550px;
+    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Droid Sans Mono', 'Consolas', monospace;
+    background-color: #141414;
+    color: #fff;
+    border: 0;
+    padding: 10px 5px 10px;
+    font-size: 13px;
+    overflow: hidden;
+}
+
+#screen:focus {
+    outline: 0;
+}
+
+#screen::-webkit-scrollbar {
+    display: none;
+}
+
+@media screen and (-webkit-min-device-pixel-ratio: 0) {
+    #screen {
+        overflow: scroll;
+    }
+}
+
+#command {
+    width: 85%;
+    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Droid Sans Mono', 'Consolas', monospace;
+    background-color: #141414;
+    color: #4de;
+    border: 0;
+}
+
+#command:focus {
+    outline: 0;
+}
+
+.shell-title {
+    font-size: 13px;
+    color: #4de;
+}
+
+.console {
+    position: relative;
+}
+
+.shell {
+    position: relative;
+    bottom: 5px;
+    left: 0;
+    width: 100%;
+}

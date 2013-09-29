@@ -1,0 +1,204 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+    <link rel="stylesheet" href="jsql-console.css" />
+    <script type="text/javascript" src="jquery-1.8.0.min.js"></script>
+    <script type="text/javascript" src="jsql-sample-data.js"></script>
+    <script type="text/javascript" src="print_r.js"></script>
+    <script type="text/javascript" src="jdump.js"></script>
+    <script type="text/javascript" src="../build/jsql.js"></script>
+</head>
+<body>
+	
+    <div class="wrapper">
+        <div class="console">
+            <textarea id="screen" name="" rows="10" cols="30" readonly>
+Welcome to jSQL.
+version 0.4.0-dev.
+type `help` for more informations.
+            </textarea><br />
+            <div class="shell">
+                <label for="command" class="shell-title">jsql &gt;</label>
+                <input id="command" name="" type="text" />
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        var screen = $('#screen');
+        var command = $('#command');
+        var bash_history = [];
+        var bash_cursor = 0;
+
+        var args = function(evt) {
+            return $(evt.currentTarget).val();
+        };
+
+        var clearConsole = function() {
+            return screen.html('>');
+        };
+
+        var clearShell = function() {
+            return command.val('');
+        };
+
+        var replaceShell = function(text) {
+            return command.val(text);
+        };
+
+        var writeConsole = function(text) {
+            return screen.append('\r\n' + text);
+        };
+
+        var goBottom = function() {
+            var scrollTop = screen[0].scrollHeight;  
+            screen.scrollTop(scrollTop);
+        };
+
+        var logHistory = function(cmd) {
+            var hasIndex = indexOf(bash_history, cmd);
+            if(cmd === '') return;
+            if(hasIndex != -1) bash_history.splice(hasIndex, 1);
+            bash_history.push(cmd);
+            bash_cursor = bash_history.length;
+        };
+
+        var prevHistory = function() {
+            if(bash_cursor > 0) bash_cursor--;
+            return bash_history[bash_cursor];
+        };
+
+        var nextHistory = function() {
+            if(bash_cursor < bash_history.length - 1) {
+                bash_cursor++;
+                return bash_history[bash_cursor];
+            }
+
+            bash_cursor = bash_history.length;
+            return '';
+        };
+
+        var handler = {
+            '': function() {},
+            'clear': clearConsole,
+            'help': function() {
+                writeConsole('');
+                writeConsole('jSQL version 0.3.0-dev.');
+                writeConsole('Help Documentation.');
+                writeConsole('-----------------------');
+                writeConsole('`create`: create new database.');
+                writeConsole('`use`: use exist database.');
+                writeConsole('`drop`: drop exist database.');
+                writeConsole('`select`: select from current database.');
+                writeConsole('');
+            }
+        };
+
+        var indexOf = function(list, sought /* ,fromIndex */) {
+            if(Array.prototype.indexOf) {
+                var args = [].slice.call(arguments, 1);
+                return [].indexOf.apply(list, args);
+            }
+
+            var self = list;
+            var length = self.length >>> 0;
+
+            if (!length) {
+                return -1;
+            }
+
+            var i = 0;
+            if (arguments.length > 2) {
+                i = arguments[1] >>> 0;
+            }
+
+            // handle negative indices
+            i = i >= 0 ? i : Math.max(0, length + i);
+            for (; i < length; i++) {
+                if (i in self && self[i] === sought) {
+                    return i;
+                }
+            }
+            return -1;
+        };
+
+        var dump = function(arr, level) {
+            var dumped_text = "";
+            if(!level) level = 0;
+
+            //The padding given at the beginning of the line.
+            var level_padding = "";
+            for(var j=0;j<level+1;j++) level_padding += "    ";
+
+            if(typeof(arr) == 'object') { //Array/Hashes/Objects
+                for(var item in arr) {
+                    var value = arr[item];
+             
+                    if(typeof(value) == 'object') { //If it is an array,
+                        dumped_text += level_padding + "'" + item + "' ...\n";
+                        dumped_text += dump(value,level+1);
+                    } else {
+                        dumped_text += level_padding + "'" + item + "' => \"" + value + "\"\n";
+                    }
+                }
+            } else { //Stings/Chars/Numbers etc.
+                dumped_text = "===>"+arr+"<===("+typeof(arr)+")";
+            }
+            return dumped_text;
+        };
+
+        var buildTimeConsuming = function(time) {
+            return '\r\n' + 'QUERY TIME IN: ' + time / 1000 + 's';
+        };
+
+        jsql.create('users', data.users, 'first', 'last', 'age').use('users');
+
+        command.keyup(function(evt) {
+            if(evt.which == 13) {
+                var cmd = args(evt);
+                evt.preventDefault();
+
+                writeConsole('> ' + cmd);
+                logHistory(cmd);
+
+                if(handler.hasOwnProperty(cmd)) {
+                    handler[cmd].call(this);
+                } else {
+                    if(!cmd.match(/^.*(jsql|jSQL).*$/) && cmd.match(/[^\(]+/) && cmd.match(/[^\(]+/)[0] in jSQL) {
+                        cmd = 'jSQL.' + cmd;
+                    }
+                    try {
+                        var start_time = new Date().getTime();
+                        var result = eval(cmd);
+                        var end_time = new Date().getTime();
+                        var execute_exhaust = end_time - start_time;
+
+                        console.log('EXECUTE COMMAND: ' + cmd);
+
+                        if(jsql.utils.isPlainObject(result) || jsql.utils.isArray(result)) {
+                            result = cmd.match(/^.*(jsql|jSQL)\..*$/) ? jdump.print(result) + buildTimeConsuming(execute_exhaust) : print_r(result);
+                        }
+                        writeConsole(result);
+                    } catch(e) {
+                        writeConsole('Error: ' + e.type);
+                    }
+                }
+
+                clearShell();
+                goBottom();
+            }
+
+            if(evt.which == 38) {
+                replaceShell(prevHistory());
+            }
+
+            if(evt.which == 40) {
+                replaceShell(nextHistory());
+            }
+        });
+    </script>
+
+</body>
+</html>

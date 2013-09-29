@@ -1,0 +1,62 @@
+<project name="jsql" default="concatenate">
+    <property name="version" value="0.7.0" />
+    <property name="build.dir" value="./build/" />
+    <property name="src.dir" value="./src/" />
+    <property name="uglifyjs.options" value="--no-mangle-functions" />
+
+    <tstamp>
+        <format property="build.time"
+              pattern="MMMM d, yyyy hh:mm:ss"
+              locale="en,US"/>
+    </tstamp>
+
+    <target name="concatenate">
+        <loadfile property="license" srcfile="LICENSE.md" />
+        <concat destfile="${build.dir}/jsql.js" fixlastline="yes" eol="lf">
+            <header trimleading="yes">
+                /*!
+                    ${license}
+                */
+            </header>
+            <footer>/* Build Time: ${build.time} */</footer>
+            <filelist dir="${src.dir}" files="jsql.js,reqwest.js,events.js" />
+        </concat>
+
+        <echo>concatenate complete!</echo>
+
+        <replaceregexp match="@VERSION@" replace="${version}" flags="g" byline="true">
+            <fileset dir="${build.dir}" includes="**/*"/>
+        </replaceregexp>
+
+        <echo>version replace complete!</echo>
+    </target>
+
+    <target name="minify">
+        <apply executable="uglifyjs" failonerror="true">
+            <fileset dir="${build.dir}" includes="jsql.js"/>
+            <mapper type="glob" from="*.js" to="${build.dir}/*-min.js"/>
+
+            <arg line="${uglifyjs.options}"/>
+            <arg line="-o"/>
+            <targetfile/>
+            <srcfile/>
+        </apply>
+
+        <echo>minify complete!</echo>
+    </target>
+
+    <target name="kissy">
+        <concat destfile="${build.dir}/kissy-wrapper/index.js" fixlastline="yes" eol="lf">
+            <filelist dir="${src.dir}/kissy-wrapper" files="index.js" />
+        </concat>
+
+        <echo>concatenate complete!</echo>
+
+        <loadfile property="jSQL" srcfile="${build.dir}/jsql.js" />
+        <replaceregexp match="@jSQL@" replace="${jSQL}" flags="g" byline="true">
+            <fileset dir="${build.dir}" includes="kissy-wrapper/*"/>
+        </replaceregexp>
+
+        <echo>source code replace complete!</echo>
+    </target>
+</project>
