@@ -28,7 +28,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
     a SQL like database using javascript
     website: http://jsql.us
     licence: MIT Licence
-    version: 0.6.0-dev
+    version: 0.7.0-dev
     
     description: using jSQL to process the data easily.
 */
@@ -51,6 +51,38 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
         _DBIndexMap = {}, 
         _protected = {},
         _events = {};
+
+    var logcat = {
+        error: function(error) {
+            if(typeof(console) !== 'undefined') {
+                if(console.warn) {
+                    console.warn(error);
+                    return;
+                }
+
+                if(console.log) {
+                    console.log(error);
+                    return;
+                }
+            }
+
+            throw(error);
+        },
+
+        info: function(info) {
+            if(typeof(console) !== 'undefined') {
+                if(console.info) {
+                    console.info(info);
+                    return;
+                }
+
+                if(console.log) {
+                    console.log(info);
+                    return;
+                }
+            }
+        }
+    };
     
     if(typeof(this.jSQL) !== 'undefined') {
         _jSQL = this.jSQL;
@@ -65,7 +97,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
     };
     
     jSQL.prototype = {
-        version: '0.6.0-dev',
+        version: '0.7.0-dev',
 
         init: function() {
             this._jSQL = _jSQL;
@@ -86,7 +118,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
             var that = this;
 
             if(this._DB.hasOwnProperty(dbname)) {
-                throw('DB Already Exist.');
+                logcat.error('DB Already Exist.');
             }
 
             if(utils.isArray(db)) {
@@ -526,7 +558,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
                 return false;
             }
 
-            console.log('%s: trigger - %s', database, event);
+            logcat.info('%s: trigger - %s', database, event);
             return this._events[database].trigger.apply(this._events[database], args);
         },
 
@@ -1507,7 +1539,7 @@ jsql.Events = (function() {
 
   return Events
 })();
-/* Build Time: August 7, 2013 04:40:59 */
+/* Build Time: September 29, 2013 11:07:15 */
 
 return jSQL;
 });
