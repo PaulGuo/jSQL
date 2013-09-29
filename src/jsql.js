@@ -27,8 +27,18 @@
         _protected = {},
         _events = {};
 
+    var interpolation = function(str) {
+        var args = [].slice.call(arguments, 1);
+
+        return str.replace(/%s/igm, function() {
+            return args.shift() || '';
+        });
+    };
+
     var logcat = {
         error: function(error) {
+            error = interpolation(error);
+
             if(typeof(console) !== 'undefined') {
                 if(console.warn) {
                     console.warn(error);
@@ -45,6 +55,8 @@
         },
 
         info: function(info) {
+            info = interpolation(info);
+
             if(typeof(console) !== 'undefined') {
                 if(console.info) {
                     console.info(info);
