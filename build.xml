@@ -46,7 +46,14 @@
     </target>
 
     <target name="kissy">
+        <loadfile property="license" srcfile="LICENSE.md" />
         <concat destfile="${build.dir}/kissy-wrapper/index.js" fixlastline="yes" eol="lf">
+            <header trimleading="yes">
+                /*!
+                    ${license}
+                */
+            </header>
+            <footer>/* Build Time: ${build.time} */</footer>
             <filelist dir="${src.dir}" files="kissy-wrapper/index.pre.js,jsql.js,reqwest.js,events.js,kissy-wrapper/index.post.js" />
         </concat>
 
