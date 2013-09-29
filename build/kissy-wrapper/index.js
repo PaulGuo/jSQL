@@ -1,34 +1,10 @@
 KISSY.add(function(S) {
-
-/*!
-Copyright (c) 2012 Guo Kai, http://jsql.us/
-
-Permission is hereby granted, free of charge, to any person obtaining
-a copy of this software and associated documentation files (the
-"Software"), to deal in the Software without restriction, including
-without limitation the rights to use, copy, modify, merge, publish,
-distribute, sublicense, and/or sell copies of the Software, and to
-permit persons to whom the Software is furnished to do so, subject to
-the following conditions:
-
-The above copyright notice and this permission notice shall be
-included in all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
-LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
-OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-
-*/
 /*
     --------------- jSQL ---------------
     a SQL like database using javascript
     website: http://jsql.us
     licence: MIT Licence
-    version: 0.7.0-dev
+    version: @VERSION@-dev
     
     description: using jSQL to process the data easily.
 */
@@ -97,7 +73,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
     };
     
     jSQL.prototype = {
-        version: '0.7.0-dev',
+        version: '@VERSION@-dev',
 
         init: function() {
             this._jSQL = _jSQL;
@@ -133,7 +109,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
                 db = utils.objectToArray(db);
             }
 
-            if(typeof(db) === 'string' && db.match(/^http(s)?:///igm)) {
+            if(typeof(db) === 'string' && db.match(/^http(s)?:\/\//igm)) {
                 var scope = arguments[2] || '*';
                 var proxyCallback = function(data) {
                     db = typeof(scope) === 'function' ? 
@@ -521,7 +497,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
                 error = args[3];
 
                 if(!uri.match('callback=')) {
-                    if(uri.match(/?/igm)) {
+                    if(uri.match(/\?/igm)) {
                         if(uri.lastIndexOf('&') === uri.length - 1) {
                             uri += 'callback=?&_t=' + utils.uuid();
                         } else {
@@ -853,7 +829,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
   var win = window
     , doc = document
-    , twoHundo = /^20d$/
+    , twoHundo = /^20\d$/
     , byTag = 'getElementsByTagName'
     , readyState = 'readyState'
     , contentType = 'Content-Type'
@@ -938,7 +914,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
   }
 
   function urlappend (url, s) {
-    return url + (/?/.test(url) ? '&' : '?') + s
+    return url + (/\?/.test(url) ? '&' : '?') + s
   }
 
   function handleJsonp(o, fn, err, url) {
@@ -946,7 +922,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
       , cbkey = o.jsonpCallback || 'callback' // the 'callback' key
       , cbval = o.jsonpCallbackName || reqwest.getcallbackPrefix(reqId)
       // , cbval = o.jsonpCallbackName || ('reqwest_' + reqId) // the 'callback' value
-      , cbreg = new RegExp('((^|?|&)' + cbkey + ')=([^&]+)')
+      , cbreg = new RegExp('((^|\\?|&)' + cbkey + ')=([^&]+)')
       , match = url.match(cbreg)
       , script = doc.createElement('script')
       , loaded = 0
@@ -1042,7 +1018,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
   }
 
   function setType(url) {
-    var m = url.match(/.(json|jsonp|html|xml)(?|$)/)
+    var m = url.match(/\.(json|jsonp|html|xml)(\?|$)/)
     return m ? m[1] : 'js'
   }
 
@@ -1215,7 +1191,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
   // normalize newline variants according to spec -> CRLF
   function normalize(s) {
-    return s ? s.replace(/r?n/g, 'rn') : ''
+    return s ? s.replace(/\r?\n/g, '\r\n') : ''
   }
 
   function serial(el, cb) {
@@ -1379,7 +1355,7 @@ jsql.Events = (function() {
 
 
   // Regular expression used to split event strings
-  var eventSplitter = /s+/
+  var eventSplitter = /\s+/
 
 
   // A module that can be mixed in to *any object* in order to provide it
@@ -1539,7 +1515,5 @@ jsql.Events = (function() {
 
   return Events
 })();
-/* Build Time: September 29, 2013 11:07:15 */
-
 return jSQL;
 });

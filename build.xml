@@ -47,16 +47,9 @@
 
     <target name="kissy">
         <concat destfile="${build.dir}/kissy-wrapper/index.js" fixlastline="yes" eol="lf">
-            <filelist dir="${src.dir}/kissy-wrapper" files="index.js" />
+            <filelist dir="${src.dir}" files="kissy-wrapper/index.pre.js,jsql.js,reqwest.js,events.js,kissy-wrapper/index.post.js" />
         </concat>
 
         <echo>concatenate complete!</echo>
-
-        <loadfile property="jSQL" srcfile="${build.dir}/jsql.js" />
-        <replaceregexp match="@jSQL@" replace="${jSQL}" flags="g" byline="true">
-            <fileset dir="${build.dir}" includes="kissy-wrapper/*"/>
-        </replaceregexp>
-
-        <echo>source code replace complete!</echo>
     </target>
 </project>
