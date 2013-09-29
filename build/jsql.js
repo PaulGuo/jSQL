@@ -61,7 +61,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
     var logcat = {
         error: function(error) {
-            error = interpolation(error);
+            error = interpolation.apply(this, arguments);
 
             if(typeof(console) !== 'undefined') {
                 if(console.warn) {
@@ -79,7 +79,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
         },
 
         info: function(info) {
-            info = interpolation(info);
+            info = interpolation.apply(this, arguments);
 
             if(typeof(console) !== 'undefined') {
                 if(console.info) {
@@ -1550,4 +1550,4 @@ jsql.Events = (function() {
 
   return Events
 })();
-/* Build Time: September 29, 2013 04:35:20 */
+/* Build Time: September 29, 2013 04:50:54 */

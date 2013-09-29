@@ -62,7 +62,7 @@ KISSY.add(function(S) {
 
     var logcat = {
         error: function(error) {
-            error = interpolation(error);
+            error = interpolation.apply(this, arguments);
 
             if(typeof(console) !== 'undefined') {
                 if(console.warn) {
@@ -80,7 +80,7 @@ KISSY.add(function(S) {
         },
 
         info: function(info) {
-            info = interpolation(info);
+            info = interpolation.apply(this, arguments);
 
             if(typeof(console) !== 'undefined') {
                 if(console.info) {
@@ -1553,4 +1553,4 @@ jsql.Events = (function() {
 })();
 return jSQL;
 });
-/* Build Time: September 29, 2013 04:35:23 */
+/* Build Time: September 29, 2013 04:50:57 */
