@@ -37,7 +37,7 @@
 
     var logcat = {
         error: function(error) {
-            error = interpolation(error);
+            error = interpolation.apply(this, arguments);
 
             if(typeof(console) !== 'undefined') {
                 if(console.warn) {
@@ -55,7 +55,7 @@
         },
 
         info: function(info) {
-            info = interpolation(info);
+            info = interpolation.apply(this, arguments);
 
             if(typeof(console) !== 'undefined') {
                 if(console.info) {
