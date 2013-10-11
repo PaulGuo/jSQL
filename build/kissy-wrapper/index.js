@@ -28,7 +28,7 @@ KISSY.add(function(S) {
     a SQL like database using javascript
     website: http://jsql.us
     licence: MIT Licence
-    version: 0.7.0-dev
+    version: 0.7.1-dev
     
     description: using jSQL to process the data easily.
 */
@@ -109,7 +109,7 @@ KISSY.add(function(S) {
     };
     
     jSQL.prototype = {
-        version: '0.7.0-dev',
+        version: '0.7.1-dev',
 
         init: function() {
             this._jSQL = _jSQL;
@@ -228,7 +228,6 @@ KISSY.add(function(S) {
         count: function() {
             var result;
             result = this._buffer.length;
-            this.rebase();
             return result;
         },
         
@@ -321,7 +320,6 @@ KISSY.add(function(S) {
         findAll: function() {
             var result;
             result = utils.clone(utils.arrayToObject(this._select()));
-            this.rebase();
             return result;
         },
 
@@ -344,14 +342,12 @@ KISSY.add(function(S) {
             }
             
             result = utils.clone(_tmp[key]);
-            this.rebase();
             return result;
         },
 
         listAll: function() {
             var result;
             result = utils.clone(this._select());
-            this.rebase();
             return result;
         },
         
@@ -377,7 +373,6 @@ KISSY.add(function(S) {
             this._currentDB = this.utils.objectToArray(_swap);
             this._DB[this._currentDBName] = this.utils.objectToArray(_swap);
             this.trigger(this._currentDBName, 'update');
-            this.rebase();
             return this;
         },
 
@@ -390,7 +385,6 @@ KISSY.add(function(S) {
                 this._currentDB.splice(fromIndex, 0, item) :
                 this._currentDB.push(item);
             this.trigger(this._currentDBName, 'update');
-            this.rebase();
             return this;
         },
 
@@ -414,7 +408,6 @@ KISSY.add(function(S) {
 
             this._DB[this._currentDBName] = this.utils.objectToArray(this._currentDB);
             this.trigger(this._currentDBName, 'update');
-            this.rebase();
             return this;
         },
 
@@ -431,7 +424,6 @@ KISSY.add(function(S) {
 
             this._currentDB = this.utils.objectToArray(_swap);
             this._DB[this._currentDBName] = this.utils.objectToArray(_swap);
-            this.rebase();
             return this;
         },
         
@@ -1553,4 +1545,4 @@ jsql.Events = (function() {
 })();
 return jSQL;
 });
-/* Build Time: September 29, 2013 04:50:57 */
+/* Build Time: October 11, 2013 03:23:55 */
